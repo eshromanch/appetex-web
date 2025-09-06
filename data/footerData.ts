@@ -27,8 +27,8 @@ export const productCategories = [
 ];
 
 export const socialMedia = [
-  { name: 'LinkedIn', icon: 'Linkedin', href: 'https://linkedin.com/company/timeless-sourcing' },
-  { name: 'Facebook', icon: 'Facebook', href: 'https://facebook.com/timelesssourcing' },
-  { name: 'Instagram', icon: 'Instagram', href: 'https://instagram.com/timelesssourcing' },
+  { name: 'LinkedIn', icon: 'Linkedin', href: 'https://linkedin.com/company/appatex' },
+  { name: 'Facebook', icon: 'Facebook', href: 'https://facebook.com/appatex' },
+  { name: 'Instagram', icon: 'Instagram', href: 'https://instagram.com/appatex' },
 ];
 

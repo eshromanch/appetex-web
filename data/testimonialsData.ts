@@ -5,7 +5,7 @@ export const testimonials = [
     company: 'Fashion Forward Inc.',
     country: 'United States',
     rating: 5,
-    text: 'Timeless Sourcing has been our trusted partner for over 5 years. Their quality control and attention to detail have helped us maintain our brand standards while reducing costs significantly.',
+    text: 'APPATEX has been our trusted partner for over 5 years. Their quality control and attention to detail have helped us maintain our brand standards while reducing costs significantly.',
     image: '/images/client-avatar-1.jpg',
     initials: 'SJ'
   },
@@ -15,7 +15,7 @@ export const testimonials = [
     company: 'Urban Style Co.',
     country: 'Canada',
     rating: 5,
-    text: 'The team at Timeless Sourcing understands our requirements perfectly. They&apos;ve consistently delivered high-quality products on time, making them our go-to sourcing partner.',
+    text: 'The team at APPATEX understands our requirements perfectly. They&apos;ve consistently delivered high-quality products on time, making them our go-to sourcing partner.',
     image: '/images/client-avatar-2.jpg',
     initials: 'MC'
   },
@@ -25,7 +25,7 @@ export const testimonials = [
     company: 'Eco Fashion Ltd.',
     country: 'United Kingdom',
     rating: 5,
-    text: 'Working with Timeless Sourcing has been a game-changer for our sustainable fashion line. Their commitment to ethical manufacturing and quality is outstanding.',
+    text: 'Working with APPATEX has been a game-changer for our sustainable fashion line. Their commitment to ethical manufacturing and quality is outstanding.',
     image: '/images/client-avatar-3.jpg',
     initials: 'ER'
   },
@@ -35,7 +35,7 @@ export const testimonials = [
     company: 'Sportswear Plus',
     country: 'Australia',
     rating: 5,
-    text: 'The sourcing expertise and manufacturing support from Timeless Sourcing have helped us expand our product line efficiently. Highly recommended!',
+    text: 'The sourcing expertise and manufacturing support from APPATEX have helped us expand our product line efficiently. Highly recommended!',
     image: '/images/client-avatar-4.jpg',
     initials: 'DT'
   },
@@ -45,7 +45,7 @@ export const testimonials = [
     company: 'Boutique Collections',
     country: 'Singapore',
     rating: 5,
-    text: 'Timeless Sourcing&apos;s professional approach and transparent communication make them stand out. They&apos;ve helped us source premium quality garments at competitive prices.',
+    text: 'APPATEX&apos;s professional approach and transparent communication make them stand out. They&apos;ve helped us source premium quality garments at competitive prices.',
     image: '/images/client-avatar-5.jpg',
     initials: 'LW'
   },
@@ -55,7 +55,7 @@ export const testimonials = [
     company: 'Corporate Wear Solutions',
     country: 'Germany',
     rating: 5,
-    text: 'For our corporate uniform requirements, Timeless Sourcing has been exceptional. Their quality assurance and compliance standards are top-notch.',
+    text: 'For our corporate uniform requirements, APPATEX has been exceptional. Their quality assurance and compliance standards are top-notch.',
     image: '/images/client-avatar-6.jpg',
     initials: 'RS'
   }
