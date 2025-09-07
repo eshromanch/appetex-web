@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 import Navbar04Page from "@/components/navbar-04/navbar-04";
 import Footer02Page from "@/components/footer-02/footer-02";
-import { QuoteProvider } from "@/contexts/QuoteContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,8 +10,8 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -37,13 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfairDisplay.variable} antialiased`}
+        className={`${inter.variable} ${lora.variable} antialiased`}
       >
-        <QuoteProvider>
-          <Navbar04Page />
-          {children}
-          <Footer02Page />
-        </QuoteProvider>
+        <Navbar04Page />
+        {children}
+        <Footer02Page />
       </body>
     </html>
   );

@@ -60,7 +60,7 @@
 
 /* APPATEX Typography Classes */
 .font-display {
-  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-family: var(--font-lora), 'Lora', serif;
 }
 
 .font-sans {

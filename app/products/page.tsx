@@ -8,17 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { products } from "@/data/productsData";
 import { categories } from "@/data/productCategoriesData";
-import { Search, X, ShoppingCart } from "lucide-react";
+import { Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useQuote } from "@/contexts/QuoteContext";
 
 function ProductsContent() {
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const { addToQuote, isInQuote } = useQuote();
 
   // Get category from URL params
   useEffect(() => {
@@ -202,31 +200,18 @@ function ProductsContent() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-              <Link href="/quote">
-                <Button
-                  size="sm"
-                  className="flex-1 appatex-gradient"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                >
-                  Get Quote
-                </Button>
-              </Link>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            className="flex-1"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              addToQuote(product);
-                            }}
-                            disabled={isInQuote(product.id)}
-                          >
-                            <ShoppingCart className="h-4 w-4" />
-                          </Button>
+                          <Link href="/quote">
+                            <Button
+                              size="sm"
+                              className="flex-1 appatex-gradient"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                            >
+                              Get Quote
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </div>

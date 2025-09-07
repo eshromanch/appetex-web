@@ -39,11 +39,11 @@ module.exports = {
   				'Inter',
   				'sans-serif'
   			],
-  			display: [
-  				'var(--font-playfair)',
-  				'Playfair Display',
-  				'serif'
-  			]
+			display: [
+				'var(--font-lora)',
+				'Lora',
+				'serif'
+			]
   		},
   		colors: {
   			border: 'hsl(var(--border))',

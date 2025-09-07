@@ -1,253 +1,371 @@
 'use client';
 
+import { useState } from 'react';
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { useQuote } from "@/contexts/QuoteContext";
-import { ShoppingCart, X, MessageSquare, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { products } from "@/data/productsData";
+import { categories } from "@/data/productCategoriesData";
+import { MessageSquare, X, Package } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+interface QuoteItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  notes: string;
+}
+
 export default function QuotePage() {
-  const { 
-    quoteItems, 
-    removeFromQuote, 
-    updateQuantity, 
-    clearQuote, 
-    getQuoteCount 
-  } = useQuote();
+  const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
+  const [clientInfo, setClientInfo] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: ''
+  });
+  const [additionalRequirements, setAdditionalRequirements] = useState('');
+
+  const addProductToQuote = (productId: string) => {
+    const existingItem = quoteItems.find(item => item.productId === productId);
+    if (existingItem) {
+      // Update quantity if product already exists
+      setQuoteItems(items => 
+        items.map(item => 
+          item.productId === productId 
+            ? { ...item, quantity: item.quantity + 100 }
+            : item
+        )
+      );
+    } else {
+      // Add new product
+      const newItem: QuoteItem = {
+        id: Date.now().toString(),
+        productId,
+        quantity: 100,
+        notes: ''
+      };
+      setQuoteItems(items => [...items, newItem]);
+    }
+  };
+
+  const removeFromQuote = (itemId: string) => {
+    setQuoteItems(items => items.filter(item => item.id !== itemId));
+  };
+
+  const updateQuantity = (itemId: string, quantity: number) => {
+    if (quantity < 100) return; // Minimum quantity is 100
+    setQuoteItems(items => 
+      items.map(item => 
+        item.id === itemId ? { ...item, quantity } : item
+      )
+    );
+  };
+
+  const updateNotes = (itemId: string, notes: string) => {
+    setQuoteItems(items => 
+      items.map(item => 
+        item.id === itemId ? { ...item, notes } : item
+      )
+    );
+  };
+
+  const clearAll = () => {
+    setQuoteItems([]);
+  };
+
+  const getProductById = (productId: string) => {
+    return products.find(p => p.id === productId);
+  };
+
+  const getCategoryById = (categoryId: string) => {
+    return categories.find(c => c.id === categoryId);
+  };
 
   return (
     <div>
       {/* Hero Section */}
       <PageHero
-        title="Your Quote Request"
-        description="Review and manage your selected products for quotation. Customize quantities and add notes for each item."
+        title="Request a Quote"
+        description="Select products from our catalog and get a customized quotation for your sourcing needs."
         backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
+        backgroundImageAlt="Professional garments sourcing and quotation request"
         height="md"
         overlay="medium"
-        backgroundImageAlt="Quote Request"
       />
 
-      {/* Quote Management Section */}
-      <SectionContainer size="xl" padding="xl" background="default">
-        <div className="space-y-8">
-          {/* Client Information Form */}
-
-
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <SectionContainer size="xl" padding="xl">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Product Selection */}
+          <div className="lg:col-span-2 space-y-6">
             <div>
-              <Heading level={2} className="heading-black mb-2">
-                Quote List
+              <Heading level={3} className="heading-black mb-4">
+                Select Products
               </Heading>
-              <Text className="body-text-black-muted">
-                {getQuoteCount()} product{getQuoteCount() !== 1 ? 's' : ''} selected for quotation
+              <Text className="body-text-black-secondary mb-6">
+                Choose from our extensive catalog of garments and textiles. You can select multiple products and specify quantities for each.
               </Text>
             </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {quoteItems.length > 0 && (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={clearQuote}
-                  className="text-red-600 border-red-200 hover:bg-red-50"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Clear All
-                </Button>
-              )}
-              <Link href="/contact" className="flex">
-                <Button 
-                  size="lg" 
-                  className="appatex-gradient w-full sm:w-auto"
-                  disabled={quoteItems.length === 0}
-                >
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  Submit Quote Request
-                </Button>
-              </Link>
-            </div>
-          </div>
 
-          {/* Quote Items */}
-          {quoteItems.length > 0 ? (
-            <div className="space-y-3">
-              {quoteItems.map((item) => (
-                <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 bg-muted/50 rounded-lg border">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="relative w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <Text weight="semibold" className="body-text-black text-sm truncate">
-                        {item.name}
-                      </Text>
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-1">
-                        <div className="flex items-center gap-2">
-                          <Text size="sm" className="body-text-black-muted">Qty:</Text>
-                          <input
-                            type="number"
-                            min="100"
-                            value={item.quantity || 100}
-                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 100)}
-                            className="w-16 px-2 py-1 text-xs border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
-                          />
-                        </div>
-                        <Text size="sm" className="body-text-black-muted">• {item.price}</Text>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between sm:justify-end gap-2">
-                    <Badge variant="secondary" className="text-xs">
-                      {item.categoryId}
-                    </Badge>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1 h-6 w-6 flex-shrink-0"
-                      onClick={() => removeFromQuote(item.id)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
+            {/* Product Dropdown */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="body-text-black">Add Product to Quote</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="product-select" className="body-text-black">
+                      Select Product
+                    </Label>
+                    <Select onValueChange={addProductToQuote}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose a product to add to your quote" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {products.map((product) => {
+                          const category = getCategoryById(product.categoryId);
+                          return (
+                            <SelectItem key={product.id} value={product.id}>
+                              <div className="flex items-center gap-3">
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  width={40}
+                                  height={40}
+                                  className="rounded object-cover"
+                                />
+                                <div>
+                                  <div className="font-medium">{product.name}</div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {category?.name} • MOQ: {product.moq}
+                                  </div>
+                                </div>
+                              </div>
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            /* Empty State */
-            <div className="text-center py-16">
-              <div className="w-24 h-24 mx-auto mb-6 bg-muted/50 rounded-full flex items-center justify-center">
-                <ShoppingCart className="h-12 w-12 text-muted-foreground" />
-              </div>
-              <Heading level={3} className="heading-black mb-4">
-                Your Quote List is Empty
-              </Heading>
-              <Text className="body-text-black-muted mb-6 max-w-md mx-auto">
-                Browse our products and add items to your quote list to get started with your sourcing request.
-              </Text>
-              <Link href="/products">
-                <Button size="lg" className="appatex-gradient">
-                  Browse Products
-                </Button>
-              </Link>
-            </div>
-          )}
-          <div className="bg-muted/30 rounded-xl p-6 border">
-            <Heading level={3} className="heading-black mb-4">
-              Your Information
-            </Heading>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  First Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Your first name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  Last Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Your last name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="your.email@company.com"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="+1 (555) 123-4567"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Your company name"
-                />
-              </div>
-            </div>
+              </CardContent>
+            </Card>
+
+            {/* Selected Products */}
+            {quoteItems.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="body-text-black">
+                      Selected Products ({quoteItems.length})
+                    </CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={clearAll}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <X className="h-4 w-4 mr-2" />
+                      Clear All
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {quoteItems.map((item) => {
+                      const product = getProductById(item.productId);
+                      const category = getCategoryById(product?.categoryId || '');
+                      
+                      if (!product) return null;
+
+                      return (
+                        <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={80}
+                            height={80}
+                            className="rounded object-cover"
+                          />
+                          <div className="flex-1 space-y-3">
+                            <div>
+                              <Heading level={6} className="heading-black">
+                                {product.name}
+                              </Heading>
+                              <Text size="sm" className="body-text-black-muted">
+                                {category?.name} • MOQ: {product.moq}
+                              </Text>
+                            </div>
+                            
+                            <div className="flex items-center gap-4">
+                              <div>
+                                <Label htmlFor={`quantity-${item.id}`} className="text-sm">
+                                  Quantity
+                                </Label>
+                                <Input
+                                  id={`quantity-${item.id}`}
+                                  type="number"
+                                  min="100"
+                                  step="100"
+                                  value={item.quantity}
+                                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 100)}
+                                  className="w-24"
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <Label htmlFor={`notes-${item.id}`} className="text-sm">
+                                  Notes (Optional)
+                                </Label>
+                                <Input
+                                  id={`notes-${item.id}`}
+                                  placeholder="Special requirements, colors, etc."
+                                  value={item.notes}
+                                  onChange={(e) => updateNotes(item.id, e.target.value)}
+                                />
+                              </div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeFromQuote(item.id)}
+                                className="text-destructive hover:text-destructive"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Empty State */}
+            {quoteItems.length === 0 && (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <Package className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                  <Heading level={4} className="heading-black mb-2">
+                    No Products Selected
+                  </Heading>
+                  <Text className="body-text-black-secondary">
+                    Use the dropdown above to add products to your quote request.
+                  </Text>
+                </CardContent>
+              </Card>
+            )}
           </div>
-          {/* Additional Message Section */}
-          {quoteItems.length > 0 && (
-            <div className="bg-muted/30 rounded-xl p-6 border">
-              <Heading level={3} className="heading-black mb-4">
-                Additional Requirements
-              </Heading>
-              <div>
-                <label className="block text-sm font-medium body-text-black mb-2">
-                  Special Instructions or Requirements
-                </label>
-                <textarea
+
+          {/* Client Information & Submit */}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="body-text-black">Your Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      value={clientInfo.firstName}
+                      onChange={(e) => setClientInfo(prev => ({ ...prev, firstName: e.target.value }))}
+                      placeholder="John"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      value={clientInfo.lastName}
+                      onChange={(e) => setClientInfo(prev => ({ ...prev, lastName: e.target.value }))}
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={clientInfo.email}
+                    onChange={(e) => setClientInfo(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="john@company.com"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={clientInfo.phone}
+                    onChange={(e) => setClientInfo(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="company">Company</Label>
+                  <Input
+                    id="company"
+                    value={clientInfo.company}
+                    onChange={(e) => setClientInfo(prev => ({ ...prev, company: e.target.value }))}
+                    placeholder="Your Company Name"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="body-text-black">Additional Requirements</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Textarea
+                  placeholder="Any special requirements, delivery timeline, quality standards, or other specifications..."
+                  value={additionalRequirements}
+                  onChange={(e) => setAdditionalRequirements(e.target.value)}
                   rows={4}
-                  className="w-full px-3 py-2 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Any special requirements, delivery preferences, quality standards, or additional information..."
-                ></textarea>
-              </div>
-            </div>
-          )}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <Text size="sm" className="body-text-black-muted">
+                      {quoteItems.length} product{quoteItems.length !== 1 ? 's' : ''} selected
+                    </Text>
+                  </div>
+                  <Link href="/contact" className="block">
+                    <Button 
+                      size="lg" 
+                      className="w-full appatex-gradient"
+                      disabled={quoteItems.length === 0}
+                    >
+                      <MessageSquare className="h-5 w-5 mr-2" />
+                      Submit Quote Request
+                    </Button>
+                  </Link>
+                  <Text size="xs" className="text-center body-text-black-muted">
+                    You&apos;ll be redirected to our contact form to complete your request
+                  </Text>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </SectionContainer>
-
-      {/* Call to Action */}
-      {quoteItems.length > 0 && (
-        <SectionContainer size="xl" padding="xl" background="muted">
-          <div className="text-center space-y-6">
-            <Heading level={2} className="heading-black">
-              Ready to Get Your Quote?
-            </Heading>
-            <Text size="lg" className="body-text-black-muted max-w-2xl mx-auto">
-              Once you&apos;ve reviewed your selected products and quantities, proceed to our contact form to submit your quote request. Our team will get back to you within 24 hours.
-            </Text>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="flex">
-                <Button size="lg" className="appatex-gradient w-full sm:w-auto">
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  Submit Quote Request
-                </Button>
-              </Link>
-              <Link href="/products" className="flex">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  Add More Products
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </SectionContainer>
-      )}
     </div>
   );
 }

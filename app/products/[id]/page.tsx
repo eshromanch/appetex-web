@@ -9,10 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { products } from "@/data/productsData";
 import { categories } from "@/data/productCategoriesData";
-import { ArrowLeft, CheckCircle, Package, Truck, Shield, ShoppingCart, MessageSquare } from "lucide-react";
+import { ArrowLeft, CheckCircle, Package, Truck, Shield, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useQuote } from "@/contexts/QuoteContext";
 
 interface ProductPageProps {
   params: Promise<{
@@ -23,14 +22,12 @@ interface ProductPageProps {
 export default function ProductPage({ params }: ProductPageProps) {
   const { id } = use(params);
   const product = products.find(p => p.id === id);
-  const { addToQuote, isInQuote } = useQuote();
 
   if (!product) {
     notFound();
   }
 
   const category = categories.find(cat => cat.id === product.categoryId);
-  const inQuote = isInQuote(product.id);
 
   const features = [
     {
@@ -120,24 +117,14 @@ export default function ProductPage({ params }: ProductPageProps) {
                       {product.moq}
                     </Text>
                   </div>
-            <div className="pt-4 space-y-3">
+            <div className="pt-4">
               <Link href="/quote">
                 <Button size="lg" className="w-full appatex-gradient">
                   <MessageSquare className="h-5 w-5 mr-2" />
                   Request Quote
                 </Button>
               </Link>
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => addToQuote(product)}
-                      disabled={inQuote}
-                    >
-                      <ShoppingCart className="h-5 w-5 mr-2" />
-                      {inQuote ? 'Added to Quote List' : 'Add to Quote List'}
-                    </Button>
-                  </div>
+            </div>
                 </CardContent>
               </Card>
 
@@ -202,20 +189,13 @@ export default function ProductPage({ params }: ProductPageProps) {
               <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto text-center">
                 Contact our team to discuss your requirements and get a customized quote for this product.
               </Text>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="appatex-gradient">
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  Request Quote
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => addToQuote(product)}
-                  disabled={inQuote}
-                >
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  {inQuote ? 'Added to Quote List' : 'Add to Quote List'}
-                </Button>
+              <div className="flex justify-center">
+                <Link href="/quote">
+                  <Button size="lg" className="appatex-gradient">
+                    <MessageSquare className="h-5 w-5 mr-2" />
+                    Request Quote
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
