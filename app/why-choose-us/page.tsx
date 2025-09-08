@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Star
 } from "lucide-react";
+import Link from "next/link";
 
 export default function WhyChooseUsPage() {
   const keyStats = [
@@ -298,13 +299,17 @@ export default function WhyChooseUsPage() {
               Join hundreds of satisfied clients who trust APPATEX for their sourcing needs. Let&apos;s discuss how we can help your business succeed.
             </Text>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="appatex-gradient">
-                Get Started Today
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Schedule Consultation
-              </Button>
+              <Link href="/quote">
+                <Button size="lg" className="appatex-gradient">
+                  Get Started Today
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button variant="outline" size="lg">
+                  Schedule Consultation
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

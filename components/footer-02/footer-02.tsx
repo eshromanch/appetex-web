@@ -1,27 +1,39 @@
 import { Separator } from "@/components/ui/separator";
 import { socialMedia } from "@/data/footerData";
+import { contactData } from "@/data/contactData";
 import {
   Linkedin,
   Facebook,
   Instagram,
+  MapPin,
+  Phone,
+  Mail,
+  LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 
-const footerSections = [
+interface FooterLink {
+  title: string;
+  href: string;
+  isContact?: boolean;
+  icon?: LucideIcon;
+}
+
+const footerSections: { title: string; links: FooterLink[] }[] = [
   {
     title: "Company",
     links: [
       {
         title: "About Us",
-        href: "#about",
+        href: "/about",
       },
       {
         title: "Our Services",
-        href: "#services",
+        href: "/services",
       },
       {
         title: "Contact Us",
-        href: "#contact",
+        href: "/contact",
       },
     ],
   },
@@ -30,15 +42,38 @@ const footerSections = [
     links: [
       {
         title: "Men's Wear",
-        href: "#products",
+        href: "/products",
       },
       {
         title: "Women's Wear",
-        href: "#products",
+        href: "/products",
       },
       {
         title: "Kids' Wear",
-        href: "#products",
+        href: "/products",
+      },
+    ],
+  },
+  {
+    title: "Contact Info",
+    links: [
+      {
+        title: contactData.address,
+        href: "#",
+        isContact: true,
+        icon: MapPin,
+      },
+      {
+        title: contactData.phone,
+        href: `tel:${contactData.phone}`,
+        isContact: true,
+        icon: Phone,
+      },
+      {
+        title: contactData.email,
+        href: `mailto:${contactData.email}`,
+        isContact: true,
+        icon: Mail,
       },
     ],
   },
@@ -56,24 +91,31 @@ const Footer02Page = () => {
             </div>
 
             <p className="mt-4 body-text-black-muted">
-              Professional garments sourcing with 14+ years of expertise. From concept to delivery, we orchestrate excellence across 25+ countries.
-            </p>
+              Professional garments sourcing with 15+ years of expertise. From concept to delivery, we orchestrate excellence across 12+ countries.
+              </p>
             </div>
 
             {footerSections.map(({ title, links }) => (
               <div key={title}>
               <h6 className="font-semibold body-text-black">{title}</h6>
                 <ul className="mt-6 space-y-4">
-                  {links.map(({ title, href }) => (
-                    <li key={title}>
-                      <Link
-                        href={href}
-                      className="body-text-black-muted hover:body-text-black transition-colors duration-200"
-                      >
-                        {title}
-                      </Link>
-                    </li>
-                  ))}
+                  {links.map((link) => {
+                    const { title, href, isContact, icon } = link;
+                    const IconComponent = icon;
+                    return (
+                      <li key={title}>
+                        <Link
+                          href={href}
+                          className="body-text-black-muted hover:body-text-black transition-colors duration-200 flex items-start gap-2"
+                        >
+                          {isContact && IconComponent && (
+                            <IconComponent className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                          )}
+                          <span className={isContact ? "text-sm" : ""}>{title}</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
@@ -109,7 +151,7 @@ const Footer02Page = () => {
               </Link>
               );
             })}
-          </div>
+            </div>
           </div>
         </div>
       </footer>

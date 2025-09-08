@@ -5,6 +5,7 @@ import { achievements } from "@/data/achievements";
 import { values } from "@/data/values";
 import { Award, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Overview = () => {
 
@@ -65,10 +66,10 @@ const Overview = () => {
 
           {/* CTA */}
           <div className="pt-4">
-            <button className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+            <Link href="/about" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
               <span className="body-text-primary">Learn More About Us</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </div>
 

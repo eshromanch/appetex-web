@@ -2,6 +2,7 @@ import { SectionContainer } from "@/components/ui/section-container";
 import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "../ui";
+import Link from "next/link";
 
 const CTA = () => {
   return (
@@ -15,12 +16,16 @@ const CTA = () => {
               Let&apos;s discuss your sourcing requirements and how we can help you achieve your business goals.
             </Text>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="appatex-gradient">
-                Get Started
-              </Button>
-              <Button variant="outline" size="lg">
-                Learn More
-              </Button>
+              <Link href="/quote">
+                <Button size="lg" className="appatex-gradient">
+                  Get Started
+                </Button>
+              </Link>
+              <Link href="/about">
+                <Button variant="outline" size="lg">
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

@@ -71,7 +71,7 @@ function ProductsContent() {
           </div>
 
           {/* Filters */}
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             {/* Search Bar */}
             <div className="relative max-w-md mx-auto">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 body-text-black-muted" />
@@ -85,12 +85,12 @@ function ProductsContent() {
             </div>
 
             {/* Category Filters */}
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex gap-3 overflow-x-auto scrollbar-hide md:flex-wrap md:justify-center md:overflow-visible">
               <Button
                 variant={selectedCategory === '' ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => setSelectedCategory('')}
-                className={selectedCategory === '' ? 'appatex-gradient' : ''}
+                className={`${selectedCategory === '' ? 'appatex-gradient' : ''} flex-shrink-0`}
               >
                 All Categories
               </Button>
@@ -100,7 +100,7 @@ function ProductsContent() {
                   variant={selectedCategory === category.id ? 'primary' : 'outline'}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={selectedCategory === category.id ? 'appatex-gradient' : ''}
+                  className={`${selectedCategory === category.id ? 'appatex-gradient' : ''} flex-shrink-0`}
                 >
                   {category.name}
                 </Button>
@@ -199,20 +199,16 @@ function ProductsContent() {
                             </Text>
                           </div>
                         </div>
-                        <div className="flex gap-2">
-                          <Link href="/quote">
+                          <Link href={'/quote'}>
+                        
                             <Button
                               size="sm"
-                              className="flex-1 appatex-gradient"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
+                              className="flex-1 appatex-gradient w-full mt-2"
                             >
                               Get Quote
                             </Button>
+                  
                           </Link>
-                        </div>
                       </div>
                     </div>
                   </div>

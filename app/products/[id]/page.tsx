@@ -105,15 +105,18 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <Text weight="bold" size="lg" className="body-text-black">
                       Price Range
                     </Text>
-                    <Text weight="bold" size="lg" className="body-text-black">
+                    <Text className='block md:hidden'>-</Text>
+                    <Text weight="normal" size="lg" className="body-text-black">
                       {product.price}
                     </Text>
                   </div>
                   <div className="flex justify-between items-center">
-                    <Text className="body-text-black">
+                    <Text weight='bold' className="body-text-black">
                       Minimum Order Quantity
                     </Text>
-                    <Text weight="semibold" className="body-text-black">
+                    <Text className='block md:hidden'>-</Text>
+
+                    <Text weight="normal" className="body-text-black">
                       {product.moq}
                     </Text>
                   </div>

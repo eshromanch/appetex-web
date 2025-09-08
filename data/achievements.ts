@@ -3,19 +3,19 @@ import { Award, Users, Target, CheckCircle, Globe, Shield } from 'lucide-react';
 export const achievements = [
   {
     id: 'years-experience',
-    title: '14+ Years Experience',
+    title: '15+ Years Experience',
     description: 'Over a decade of expertise in global sourcing and supply chain management',
     icon: Award
   },
   {
     id: 'happy-clients',
-    title: '500+ Happy Clients',
+    title: '180+ Happy Clients',
     description: 'Satisfied customers worldwide who trust us for their sourcing needs',
     icon: Users
   },
   {
     id: 'countries-served',
-    title: '25+ Countries Served',
+    title: '12+ Countries Served',
     description: 'Global reach with established networks across multiple continents',
     icon: Globe
   },
@@ -27,7 +27,7 @@ export const achievements = [
   },
   {
     id: 'team-members',
-    title: '50+ Team Members',
+    title: '15+ Team Members',
     description: 'Experienced professionals dedicated to delivering exceptional service',
     icon: Users
   },

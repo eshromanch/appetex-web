@@ -9,10 +9,10 @@ export default function Home() {
   return (
     <main>
       <Hero01 />
-      <Logos07Page />
+      <Logos07Page type="client" />
       <Overview />
       <CategorySection />
-      <Logos07Page />
+      <Logos07Page type="partner" />
       <ProvenProcesses />
       {/* <Testimonial04 /> */}
       <CTA />

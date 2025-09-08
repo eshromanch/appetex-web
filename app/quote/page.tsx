@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { PageHero } from "@/components/ui/page-hero";
 import { SectionContainer } from "@/components/ui/section-container";
 import { Heading, Text } from "@/components/ui/typography";
@@ -9,11 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { products } from "@/data/productsData";
 import { categories } from "@/data/productCategoriesData";
-import { MessageSquare, X, Package } from "lucide-react";
-import Image from "next/image";
+import { MessageSquare, X, Package, Search, Check } from "lucide-react";
 import Link from "next/link";
 
 interface QuoteItem {
@@ -33,6 +31,9 @@ export default function QuotePage() {
     company: ''
   });
   const [additionalRequirements, setAdditionalRequirements] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const addProductToQuote = (productId: string) => {
     const existingItem = quoteItems.find(item => item.productId === productId);
@@ -41,7 +42,7 @@ export default function QuotePage() {
       setQuoteItems(items => 
         items.map(item => 
           item.productId === productId 
-            ? { ...item, quantity: item.quantity + 100 }
+            ? { ...item, quantity: item.quantity + 1000 }
             : item
         )
       );
@@ -50,7 +51,7 @@ export default function QuotePage() {
       const newItem: QuoteItem = {
         id: Date.now().toString(),
         productId,
-        quantity: 100,
+        quantity: 1000,
         notes: ''
       };
       setQuoteItems(items => [...items, newItem]);
@@ -62,7 +63,7 @@ export default function QuotePage() {
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
-    if (quantity < 100) return; // Minimum quantity is 100
+    if (quantity < 1000) return; // Minimum quantity is 1000
     setQuoteItems(items => 
       items.map(item => 
         item.id === itemId ? { ...item, quantity } : item
@@ -90,6 +91,41 @@ export default function QuotePage() {
     return categories.find(c => c.id === categoryId);
   };
 
+  // Filter products based on search query
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) return products;
+    
+    const query = searchQuery.toLowerCase();
+    return products.filter(product => {
+      const category = getCategoryById(product.categoryId);
+      return (
+        product.name.toLowerCase().includes(query) ||
+        category?.name.toLowerCase().includes(query) ||
+        product.moq.toLowerCase().includes(query)
+      );
+    });
+  }, [searchQuery]);
+
+  const handleProductSelect = (productId: string) => {
+    addProductToQuote(productId);
+    setSearchQuery('');
+    setIsSelectOpen(false);
+  };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSelectOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       {/* Hero Section */}
@@ -103,9 +139,9 @@ export default function QuotePage() {
       />
 
       <SectionContainer size="xl" padding="xl">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Product Selection */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 lg:space-y-6">
             <div>
               <Heading level={3} className="heading-black mb-4">
                 Select Products
@@ -115,7 +151,7 @@ export default function QuotePage() {
               </Text>
             </div>
 
-            {/* Product Dropdown */}
+            {/* Product Search */}
             <Card>
               <CardHeader>
                 <CardTitle className="body-text-black">Add Product to Quote</CardTitle>
@@ -123,38 +159,60 @@ export default function QuotePage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="product-select" className="body-text-black">
-                      Select Product
+                    <Label htmlFor="product-search" className="body-text-black">
+                      Search and Select Product
                     </Label>
-                    <Select onValueChange={addProductToQuote}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Choose a product to add to your quote" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {products.map((product) => {
-                          const category = getCategoryById(product.categoryId);
-                          return (
-                            <SelectItem key={product.id} value={product.id}>
-                              <div className="flex items-center gap-3">
-                                <Image
-                                  src={product.image}
-                                  alt={product.name}
-                                  width={40}
-                                  height={40}
-                                  className="rounded object-cover"
-                                />
-                                <div>
-                                  <div className="font-medium">{product.name}</div>
-                                  <div className="text-sm text-muted-foreground">
-                                    {category?.name} • MOQ: {product.moq}
+                    <div className="relative" ref={searchRef}>
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="product-search"
+                        placeholder="Search products by name, category, or MOQ..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onFocus={() => setIsSelectOpen(true)}
+                        className="pl-10"
+                      />
+                      
+                      {/* Search Results Dropdown */}
+                      {isSelectOpen && (
+                        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                        {filteredProducts.length > 0 ? (
+                          filteredProducts.map((product) => {
+                            const category = getCategoryById(product.categoryId);
+                            const isAlreadyAdded = quoteItems.some(item => item.productId === product.id);
+                            
+                            return (
+                              <div
+                                key={product.id}
+                                onClick={() => !isAlreadyAdded && handleProductSelect(product.id)}
+                                className={`p-3 cursor-pointer border-b border-gray-100 last:border-b-0 hover:bg-gray-50 ${
+                                  isAlreadyAdded ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-gray-900 truncate">
+                                      {product.name}
+                                    </div>
+                                    <div className="text-sm text-gray-500 truncate">
+                                      {category?.name} • MOQ: {product.moq}
+                                    </div>
                                   </div>
+                                  {isAlreadyAdded && (
+                                    <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  )}
                                 </div>
                               </div>
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
+                            );
+                          })
+                        ) : (
+                          <div className="p-3 text-center text-gray-500">
+                            No products found matching &quot;{searchQuery}&quot;
+                          </div>
+                        )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -164,7 +222,7 @@ export default function QuotePage() {
             {quoteItems.length > 0 && (
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <CardTitle className="body-text-black">
                       Selected Products ({quoteItems.length})
                     </CardTitle>
@@ -172,7 +230,7 @@ export default function QuotePage() {
                       variant="outline"
                       size="sm"
                       onClick={clearAll}
-                      className="text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive self-start sm:self-auto"
                     >
                       <X className="h-4 w-4 mr-2" />
                       Clear All
@@ -188,15 +246,15 @@ export default function QuotePage() {
                       if (!product) return null;
 
                       return (
-                        <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
-                          <Image
+                        <div key={item.id} className="flex flex-col sm:flex-row items-start gap-4 p-4 border rounded-lg">
+                          {/* <Image
                             src={product.image}
                             alt={product.name}
                             width={80}
                             height={80}
-                            className="rounded object-cover"
-                          />
-                          <div className="flex-1 space-y-3">
+                            className="rounded object-cover flex-shrink-0"
+                          /> */}
+                          <div className="flex-1 space-y-3 w-full">
                             <div>
                               <Heading level={6} className="heading-black">
                                 {product.name}
@@ -206,22 +264,22 @@ export default function QuotePage() {
                               </Text>
                             </div>
                             
-                            <div className="flex items-center gap-4">
-                              <div>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                              <div className="w-full sm:w-auto">
                                 <Label htmlFor={`quantity-${item.id}`} className="text-sm">
                                   Quantity
                                 </Label>
                                 <Input
                                   id={`quantity-${item.id}`}
                                   type="number"
-                                  min="100"
-                                  step="100"
+                                  min="1000"
+                                  step="1000"
                                   value={item.quantity}
-                                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 100)}
-                                  className="w-24"
+                                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1000)}
+                                  className="w-full sm:w-24"
                                 />
                               </div>
-                              <div className="flex-1">
+                              <div className="flex-1 w-full">
                                 <Label htmlFor={`notes-${item.id}`} className="text-sm">
                                   Notes (Optional)
                                 </Label>
@@ -236,7 +294,7 @@ export default function QuotePage() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => removeFromQuote(item.id)}
-                                className="text-destructive hover:text-destructive"
+                                className="text-destructive hover:text-destructive self-end sm:self-auto"
                               >
                                 <X className="h-4 w-4" />
                               </Button>
@@ -267,13 +325,13 @@ export default function QuotePage() {
           </div>
 
           {/* Client Information & Submit */}
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="body-text-black">Your Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">First Name</Label>
                     <Input

@@ -1,0 +1,13 @@
+nav bar (mobile)
+product detail text(mobile)
+hero section buttons for all pages
+learn more buttons
+footer links
+ready to partner with us buttons
+get ready to start buttons
+about/service page hero section image
+product get qoute button
+product detail page card
+submit qoute request button
+contact faq section
+

@@ -12,8 +12,8 @@ import {
   MapPin, 
   Clock, 
   Send, 
-  MessageCircle,
-  CheckCircle
+  CheckCircle,
+  MessageSquare
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -34,11 +34,11 @@ export default function ContactPage() {
       action: "Call Now"
     },
     {
-      icon: MessageCircle,
-      title: "Live Chat",
-      description: "Chat with our team in real-time",
-      contact: "Available 9 AM - 6 PM",
-      action: "Start Chat"
+      icon: MessageSquare,
+      title: "WhatsApp",
+      description: "Chat with us instantly on WhatsApp",
+      contact: contactData.whatsapp,
+      action: "WhatsApp Chat"
     }
   ];
 
@@ -47,6 +47,7 @@ export default function ContactPage() {
       city: "Dhaka, Bangladesh",
       address: contactData.address,
       phone: contactData.phone,
+      whatsapp: contactData.whatsapp,
       email: contactData.email,
       hours: "Sunday - Thursday: 9:00 AM - 6:00 PM"
     }
@@ -79,7 +80,7 @@ export default function ContactPage() {
             <Heading level={2} className="heading-black mb-4">
               How Can We Help You?
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="body-text-black-secondary text-center">
               Choose the most convenient way to reach out to our team of sourcing experts.
             </Text>
           </div>
@@ -96,10 +97,10 @@ export default function ContactPage() {
                     <Heading level={4} className="heading-black mb-3">
                       {method.title}
                     </Heading>
-                    <Text className="body-text-black-muted mb-4">
+                    <Text className="body-text-black-muted mb-4 text-center">
                       {method.description}
                     </Text>
-                    <Text weight="semibold" className="body-text-black mb-4">
+                    <Text weight="semibold" className="body-text-black mb-4 text-center">
                       {method.contact}
                     </Text>
                     <Button className="appatex-gradient">
@@ -255,6 +256,14 @@ export default function ContactPage() {
                       </div>
                       
                       <div className="flex items-start gap-3">
+                        <MessageSquare className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <Text weight="semibold" className="body-text-black">WhatsApp</Text>
+                          <Text className="body-text-black-muted">{office.whatsapp}</Text>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
                         <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <Text weight="semibold" className="body-text-black">Email</Text>
@@ -361,27 +370,6 @@ export default function ContactPage() {
       </SectionContainer>
 
       {/* CTA Section */}
-      <SectionContainer size="xl" padding="xl" background="default">
-        <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-          <CardContent className="py-12 text-center">
-            <Heading level={2} className="heading-black mb-4">
-              Ready to Get Started?
-            </Heading>
-            <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto">
-              Don&apos;t wait! Contact our team today and let&apos;s discuss how we can help you with your sourcing needs.
-            </Text>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="appatex-gradient">
-                Contact Us Now
-                <Send className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Schedule a Call
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </SectionContainer>
     </div>
   );
 }

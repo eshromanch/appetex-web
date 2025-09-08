@@ -6,6 +6,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { services } from "@/data/services";
 import { Search, Users, Package, Truck, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ServicesPage() {
   const processSteps = [
@@ -71,7 +72,7 @@ export default function ServicesPage() {
         badge="Our Services"
         title="Comprehensive Sourcing Solutions"
         description="From initial consultation to final delivery, we provide end-to-end sourcing services that help you find the right products at the right price with the right quality."
-        backgroundImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+        backgroundImage="/service.jpg"
         backgroundImageAlt="Professional sourcing and supply chain management"
         primaryButton={{
           text: "Get Quote",
@@ -92,7 +93,7 @@ export default function ServicesPage() {
             <Heading level={2} className="heading-black mb-4">
               Our Core Services
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="text-center body-text-black-secondary">
               We offer a comprehensive range of sourcing services tailored to meet your specific business needs.
             </Text>
           </div>
@@ -135,7 +136,7 @@ export default function ServicesPage() {
             <Heading level={2} className="heading-black mb-4">
               Our Sourcing Process
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="text-center body-text-black-secondary">
               Our systematic approach ensures quality, efficiency, and customer satisfaction at every step of the sourcing journey.
             </Text>
           </div>
@@ -149,14 +150,14 @@ export default function ServicesPage() {
                     <div className="w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
                       <Icon className="h-10 w-10 text-primary" />
                     </div>
-                    {index < processSteps.length - 1 && (
+                    {/* {index < processSteps.length - 1 && (
                       <div className="hidden lg:block absolute top-10 left-full w-full h-0.5 bg-primary/20 transform translate-x-4"></div>
-                    )}
+                    )} */}
                   </div>
                   <Heading level={4} className="heading-black mb-3">
                     {step.title}
                   </Heading>
-                  <Text className="body-text-black-muted">
+                  <Text className="body-text-black-muted text-center">
                     {step.description}
                   </Text>
                 </div>
@@ -173,7 +174,7 @@ export default function ServicesPage() {
             <Heading level={2} className="heading-black mb-4">
               Why Choose Our Services?
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="body-text-black-secondary text-center">
               We combine industry expertise, global reach, and personalized service to deliver exceptional results.
             </Text>
           </div>
@@ -190,7 +191,7 @@ export default function ServicesPage() {
                     <Heading level={4} className="heading-black mb-3">
                       {benefit.title}
                     </Heading>
-                    <Text className="body-text-black-muted">
+                    <Text className="body-text-black-muted text-center">
                       {benefit.description}
                     </Text>
                   </CardContent>
@@ -265,17 +266,21 @@ export default function ServicesPage() {
             <Heading level={2} className="heading-black mb-4">
               Ready to Get Started?
             </Heading>
-            <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto">
+            <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto text-center">
               Let&apos;s discuss your sourcing requirements and how our services can help you achieve your business goals.
             </Text>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="appatex-gradient">
-                Request Quote
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Contact Our Team
-              </Button>
+              <Link href="/quote">
+                <Button size="lg" className="appatex-gradient">
+                  Request Quote
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button variant="outline" size="lg">
+                  Contact Our Team
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

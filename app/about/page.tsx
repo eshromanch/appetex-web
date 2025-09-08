@@ -6,32 +6,34 @@ import { PageHero } from "@/components/ui/page-hero";
 import { aboutData } from "@/data/aboutData";
 import { achievements } from "@/data/achievements";
 import { CheckCircle, Users, Globe, Award, Target, Shield } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutPage() {
   const stats = [
     {
       icon: Users,
-      number: "500+",
+      number: "180+",
       label: "Happy Clients",
       description: "Satisfied customers worldwide"
     },
     {
       icon: Globe,
-      number: "25+",
+      number: "12+",
       label: "Countries Served",
       description: "Global sourcing network"
     },
     {
       icon: Award,
-      number: "14+",
+      number: "15+",
       label: "Years Experience",
       description: "Industry expertise"
     },
     {
       icon: Target,
-      number: "100%",
-      label: "Quality Assured",
-      description: "Quality control standards"
+      number: "15+",
+      label: "Team Members",
+      description: "Expert professionals"
     }
   ];
 
@@ -44,17 +46,17 @@ export default function AboutPage() {
     {
       icon: Globe,
       title: "Global Network",
-      description: "Extensive network of verified suppliers across 25+ countries for reliable and diverse sourcing options."
+      description: "Extensive network of verified suppliers across 12+ countries for reliable and diverse sourcing options."
     },
     {
       icon: Users,
       title: "Expert Team",
-      description: "Experienced professionals with deep industry knowledge and local market expertise."
+      description: "15+ experienced professionals with deep industry knowledge and local market expertise."
     },
     {
       icon: Award,
       title: "Proven Track Record",
-      description: "14+ years of successful sourcing experience with 500+ satisfied clients worldwide."
+      description: "15+ years of successful sourcing experience with 180+ satisfied clients worldwide."
     }
   ];
 
@@ -65,7 +67,7 @@ export default function AboutPage() {
         badge="About APPATEX"
         title={aboutData.title}
         description={aboutData.description}
-        backgroundImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop&crop=center"
+        backgroundImage="/about.jpg"
         backgroundImageAlt="Professional garments sourcing and manufacturing"
         primaryButton={{
           text: "Our Services",
@@ -103,10 +105,10 @@ export default function AboutPage() {
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
             <Heading level={2} className="heading-black mb-6">
-              Our Story
+              {aboutData.story.title}
             </Heading>
-            <Text size="lg" className="body-text-black-secondary leading-relaxed">
-              Founded by industry veterans with a shared vision of transforming global sourcing, APPATEX was born from the belief that every business deserves access to world-class manufacturing partners.
+            <Text size="lg" className="body-text-black-secondary leading-relaxed text-center ">
+              {aboutData.story.content}
             </Text>
           </div>
 
@@ -118,31 +120,37 @@ export default function AboutPage() {
                 <div className="space-y-6">
                   <div>
                     <Heading level={3} className="heading-black mb-2">
-                      Ahmed Rahman
+                      {aboutData.founders[0].name}
                     </Heading>
                     <Text weight="semibold" className="body-text-black text-primary">
-                      Co-Founder & CEO
+                      {aboutData.founders[0].role}
                     </Text>
                   </div>
                   <Text className="body-text-black-muted leading-relaxed text-lg">
-                    With over 15 years in international trade and supply chain management, Ahmed brings deep expertise in building sustainable sourcing networks across Asia. His vision drives APPATEX&apos;s commitment to quality and innovation.
+                    {aboutData.founders[0].bio}
                   </Text>
-                  <div className="flex items-center gap-4 pt-4">
+                  {/* <div className="flex items-center gap-4 pt-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                       <Globe className="h-6 w-6 text-primary" />
                     </div>
                     <div>
                       <Text weight="semibold" className="body-text-black">Global Network</Text>
-                      <Text size="sm" className="body-text-black-muted">25+ Countries</Text>
+                      <Text size="sm" className="body-text-black-muted">12+ Countries</Text>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="order-1 lg:order-2">
                 <div className="relative">
                   <div className="w-full h-80 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
-                    <div className="w-64 h-64 bg-white rounded-xl shadow-lg flex items-center justify-center">
-                      <Users className="h-24 w-24 text-gray-400" />
+                    <div className="w-64 h-64 bg-white rounded-xl shadow-lg overflow-hidden">
+                      <Image
+                        src="/content/zia"
+                        alt={aboutData.founders[0].name}
+                        width={500}
+                        height={500}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>
@@ -154,8 +162,14 @@ export default function AboutPage() {
               <div className="order-1">
                 <div className="relative">
                   <div className="w-full h-80 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
-                    <div className="w-64 h-64 bg-white rounded-xl shadow-lg flex items-center justify-center">
-                      <Award className="h-24 w-24 text-gray-400" />
+                    <div className="w-64 h-64 bg-white rounded-xl shadow-lg overflow-hidden">
+                      <Image
+                        src="/content/nayeem"
+                        alt={aboutData.founders[1].name}
+                        width={500}
+                        height={500}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>
@@ -164,24 +178,15 @@ export default function AboutPage() {
                 <div className="space-y-6">
                   <div>
                     <Heading level={3} className="heading-black mb-2">
-                      Sarah Chen
+                      {aboutData.founders[1].name}
                     </Heading>
                     <Text weight="semibold" className="body-text-black text-primary">
-                      Co-Founder & COO
+                      {aboutData.founders[1].role}
                     </Text>
                   </div>
                   <Text className="body-text-black-muted leading-relaxed text-lg">
-                    Sarah&apos;s background in fashion design and manufacturing operations spans 12 years. She ensures every product meets the highest standards while maintaining efficient production processes and client satisfaction.
+                    {aboutData.founders[1].bio}
                   </Text>
-                  <div className="flex items-center gap-4 pt-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Shield className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <Text weight="semibold" className="body-text-black">Quality Assurance</Text>
-                      <Text size="sm" className="body-text-black-muted">100% Standards</Text>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -238,7 +243,7 @@ export default function AboutPage() {
             <Heading level={2} className="heading-black mb-4">
               Key Achievements
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="body-text-black-secondary text-center">
               Our track record speaks for itself. Here are some of our notable achievements in the sourcing industry.
             </Text>
           </div>
@@ -255,7 +260,7 @@ export default function AboutPage() {
                     <Heading level={4} className="heading-black mb-3">
                       {achievement.title}
                     </Heading>
-                    <Text className="body-text-black-muted">
+                    <Text className="body-text-black-muted text-center">
                       {achievement.description}
                     </Text>
                   </CardContent>
@@ -276,7 +281,7 @@ export default function AboutPage() {
             <Heading level={2} className="heading-black mb-4">
               Why Choose APPATEX?
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="body-text-black-secondary text-center">
               We combine industry expertise, global reach, and personalized service to deliver exceptional sourcing solutions.
             </Text>
           </div>
@@ -315,12 +320,16 @@ export default function AboutPage() {
               Let&apos;s discuss your sourcing requirements and how we can help you achieve your business goals.
             </Text>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="appatex-gradient">
-                Get Started
-              </Button>
-              <Button variant="outline" size="lg">
-                Learn More
-              </Button>
+              <Link href="/quote">
+                <Button size="lg" className="appatex-gradient">
+                  Get Started
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button variant="outline" size="lg">
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

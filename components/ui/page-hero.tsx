@@ -60,7 +60,7 @@ export const PageHero = ({
       <div className="relative z-10 w-full px-6 xl:px-0">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center space-y-8 max-w-4xl mx-auto py-12">
-            <div>
+            <div className="pt-20 lg:pt-0">
               {badge && (
                 <Badge variant="secondary" className="mb-4 bg-white/90 text-black">
                   {badge}
@@ -69,7 +69,7 @@ export const PageHero = ({
               <Heading level={1} className="heading-white mb-6">
                 {title}
               </Heading>
-              <Text size="xl" className="body-text-white-secondary leading-relaxed">
+              <Text size="xl" className="body-text-white-secondary leading-relaxed text-center">
                 {description}
               </Text>
             </div>
