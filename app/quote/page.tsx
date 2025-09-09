@@ -136,9 +136,10 @@ export default function QuotePage() {
         backgroundImageAlt="Professional garments sourcing and quotation request"
         height="md"
         overlay="medium"
+        
       />
 
-      <SectionContainer size="xl" padding="xl">
+      <SectionContainer className='-mt-20 pt-4' size="xl" padding="xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Product Selection */}
           <div className="lg:col-span-2 space-y-4 lg:space-y-6">
