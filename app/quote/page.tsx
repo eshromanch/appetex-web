@@ -134,9 +134,16 @@ export default function QuotePage() {
         description="Select products from our catalog and get a customized quotation for your sourcing needs."
         backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
         backgroundImageAlt="Professional garments sourcing and quotation request"
+        primaryButton={{
+          text: "View Products",
+          href: "/products"
+        }}
+        secondaryButton={{
+          text: "Contact Us",
+          href: "/contact"
+        }}
         height="md"
         overlay="medium"
-        
       />
 
       <SectionContainer className='-mt-20 pt-4' size="xl" padding="xl">

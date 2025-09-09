@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface PageHeroProps {
   badge?: string;
@@ -77,18 +78,22 @@ export const PageHero = ({
             {(primaryButton || secondaryButton) && (
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {primaryButton && (
-                  <Button size="lg" className="appatex-gradient">
-                    {primaryButton.text}
-                  </Button>
+                  <Link href={primaryButton.href}>
+                    <Button size="lg" className="appatex-gradient">
+                      {primaryButton.text}
+                    </Button>
+                  </Link>
                 )}
                 {secondaryButton && (
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
-                  >
-                    {secondaryButton.text}
-                  </Button>
+                  <Link href={secondaryButton.href}>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
+                    >
+                      {secondaryButton.text}
+                    </Button>
+                  </Link>
                 )}
               </div>
             )}

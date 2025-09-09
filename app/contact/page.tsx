@@ -69,6 +69,14 @@ export default function ContactPage() {
         description="Ready to start your sourcing journey? Our expert team is here to help you find the right products at the right price with the right quality."
         backgroundImage="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
         backgroundImageAlt="Professional business communication and team collaboration"
+        primaryButton={{
+          text: "Request Quote",
+          href: "/quote"
+        }}
+        secondaryButton={{
+          text: "Our Services",
+          href: "/services"
+        }}
         height="md"
         overlay="medium"
       />

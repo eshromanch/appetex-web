@@ -65,7 +65,7 @@ const Overview = () => {
           </div>
 
           {/* CTA */}
-          <div className="pt-4">
+          <div className="pt-4 hidden md:block">
             <Link href="/about" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
               <span className="body-text-primary">Learn More About Us</span>
               <ArrowRight className="w-4 h-4" />
@@ -103,6 +103,13 @@ const Overview = () => {
             </div>
           </div>
         </div>
+                  {/* CTA */}
+                  <div className="pt-4 block md:hidden">
+            <Link href="/about" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+              <span className="body-text-primary">Learn More About Us</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
       </div>
     </SectionContainer>
   );

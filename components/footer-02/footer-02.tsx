@@ -83,7 +83,7 @@ const Footer02Page = () => {
   return (
     <footer className="bg-background border-t border-border">
         <div className="max-w-screen-xl mx-auto">
-        <div className="py-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-10 px-6 xl:px-0">
+        <div className="py-12 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-10 px-6 xl:px-0">
           <div className="col-span-full lg:w-4/6 lg:col-span-2">
               {/* Logo */}
             <div className="text-2xl font-display font-bold appatex-text-gradient">
@@ -96,9 +96,9 @@ const Footer02Page = () => {
             </div>
 
             {footerSections.map(({ title, links }) => (
-              <div key={title}>
+              <div className="w-full" key={title}>
               <h6 className="font-semibold body-text-black">{title}</h6>
-                <ul className="mt-6 space-y-4">
+                <ul className="mt-6  space-y-4">
                   {links.map((link) => {
                     const { title, href, isContact, icon } = link;
                     const IconComponent = icon;
