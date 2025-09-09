@@ -5,12 +5,14 @@ import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import Link from "next/link";
+import Image from "next/image";
 
 const Navbar04Page = () => {
   return (
     <nav className="fixed top-6 inset-x-4 h-16 bg-background/95 backdrop-blur-sm border border-border max-w-screen-xl mx-auto rounded-full z-50">
       <div className="h-full flex items-center justify-between mx-auto px-4">
-        <Logo />
+        {/* <Logo /> */}
+        <Image src="/logo.png" alt="Logo" width={150} height={150} className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"/>
 
         {/* Desktop Menu */}
         <NavMenu className="hidden md:block" />
@@ -18,7 +20,7 @@ const Navbar04Page = () => {
         <div className="flex items-center gap-3">
           <Link href="/quote">
             <Button className="hidden md:block rounded-full appatex-gradient">
-              Get Quote
+              Get Started
             </Button>
           </Link>
 

@@ -40,7 +40,7 @@ export const aboutData = {
   ],
 
   contact: {
-    whatsapp: "01672724579",
+    whatsapp: "+880 1672724579",
     address: "House #1, 3rd floor, Road #5, Uttara Sector 11, Dhaka 1230, Bangladesh."
   }
 };

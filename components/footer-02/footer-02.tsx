@@ -8,6 +8,7 @@ import {
   MapPin,
   Phone,
   Mail,
+  MessageSquare,
   LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -70,6 +71,12 @@ const footerSections: { title: string; links: FooterLink[] }[] = [
         icon: Phone,
       },
       {
+        title: contactData.whatsapp,
+        href: `https://wa.me/${contactData.whatsapp.replace(/[^0-9]/g, '')}`,
+        isContact: true,
+        icon: MessageSquare,
+      },
+      {
         title: contactData.email,
         href: `mailto:${contactData.email}`,
         isContact: true,
@@ -104,15 +111,29 @@ const Footer02Page = () => {
                     const IconComponent = icon;
                     return (
                       <li key={title}>
-                        <Link
-                          href={href}
-                          className="body-text-black-muted hover:body-text-black transition-colors duration-200 flex items-start gap-2"
-                        >
-                          {isContact && IconComponent && (
-                            <IconComponent className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                          )}
-                          <span className={isContact ? "text-sm" : ""}>{title}</span>
-                        </Link>
+                        {href.startsWith('http') ? (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="body-text-black-muted hover:body-text-black transition-colors duration-200 flex items-start gap-2"
+                          >
+                            {isContact && IconComponent && (
+                              <IconComponent className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            )}
+                            <span className={isContact ? "text-sm" : ""}>{title}</span>
+                          </a>
+                        ) : (
+                          <Link
+                            href={href}
+                            className="body-text-black-muted hover:body-text-black transition-colors duration-200 flex items-start gap-2"
+                          >
+                            {isContact && IconComponent && (
+                              <IconComponent className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                            )}
+                            <span className={isContact ? "text-sm" : ""}>{title}</span>
+                          </Link>
+                        )}
                       </li>
                     );
                   })}

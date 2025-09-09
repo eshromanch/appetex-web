@@ -205,7 +205,7 @@ function ProductsContent() {
                               size="sm"
                               className="flex-1 appatex-gradient w-full mt-2"
                             >
-                              Get Quote
+                              START YOUR ORDER
                             </Button>
                   
                           </Link>

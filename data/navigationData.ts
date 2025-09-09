@@ -8,7 +8,7 @@ export const navigationItems = [
 
 export const navigationButtons = {
   primary: {
-    text: "Get Quote",
+    text: "START YOUR ORDER",
     href: "/quote"
   },
   secondary: {

@@ -324,7 +324,7 @@ export default function QuotePage() {
                   <Heading level={4} className="heading-black mb-2">
                     No Products Selected
                   </Heading>
-                  <Text className="body-text-black-secondary">
+                  <Text className="body-text-black-secondary text-center">
                     Use the dropdown above to add products to your quote request.
                   </Text>
                 </CardContent>
@@ -420,7 +420,7 @@ export default function QuotePage() {
                       disabled={quoteItems.length === 0}
                     >
                       <MessageSquare className="h-5 w-5 mr-2" />
-                      Submit Quote Request
+                      Submit Inquiry
                     </Button>
                   </Link>
                   <Text size="xs" className="text-center body-text-black-muted">

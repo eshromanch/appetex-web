@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import Link from "next/link";
+import Image from "next/image";
 
 export const NavigationSheet = () => {
   const [open, setOpen] = useState(false);
@@ -19,12 +20,13 @@ export const NavigationSheet = () => {
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <Logo />
+        {/* <Logo /> */}
+        <Image src="/logo.png" alt="Logo" width={150} height={150} className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"/>
         <NavMenu orientation="vertical" className="mt-12" onItemClick={() => setOpen(false)} />
         <div className="w-full flex items-center justify-center">
       <Link className="w-full" href="/quote">
             <Button onClick={() => setOpen(false)} variant="primary" size="lg" className="w-full mt-6 block md:hidden appatex-gradient">
-              Get Quote
+              Get Started
             </Button>
           </Link>
       </div>

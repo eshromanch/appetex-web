@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { products } from "@/data/productsData";
 import { categories } from "@/data/productCategoriesData";
-import { ArrowLeft, CheckCircle, Package, Truck, Shield, MessageSquare } from "lucide-react";
+import { ArrowLeft, CheckCircle, Package, Truck, Shield, MessageSquare, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -124,7 +124,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               <Link href="/quote">
                 <Button size="lg" className="w-full appatex-gradient">
                   <MessageSquare className="h-5 w-5 mr-2" />
-                  Request Quote
+                  Start Inquiry
                 </Button>
               </Link>
             </div>
@@ -154,11 +154,9 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="space-y-8">
             <div className="text-center">
               <Heading level={2} className="heading-black mb-4">
-                Why Choose This Product?
+                Why Choose Appatex?
               </Heading>
-              <Text className="body-text-black-secondary">
-                Our commitment to quality and service excellence
-              </Text>
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -173,7 +171,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                       <Heading level={4} className="heading-black mb-2">
                         {feature.title}
                       </Heading>
-                      <Text size="sm" className="body-text-black-muted">
+                      <Text size="sm" className="body-text-black-muted text-center">
                         {feature.description}
                       </Text>
                     </CardContent>
@@ -184,24 +182,31 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* CTA Section */}
-          <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="py-12 text-center">
-              <Heading level={2} className="heading-black mb-4">
-                Ready to Get Started?
-              </Heading>
-              <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto text-center">
-                Contact our team to discuss your requirements and get a customized quote for this product.
-              </Text>
-              <div className="flex justify-center">
-                <Link href="/quote">
-                  <Button size="lg" className="appatex-gradient">
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    Request Quote
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+        {/* CTA Section */}
+
+        <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+          <CardContent className="py-12 text-center">
+            <Heading level={2} className="heading-black mb-4">
+              Ready to Get Started?
+            </Heading>
+            <Text size="lg" className="body-text-black-secondary mb-6 max-w-2xl mx-auto text-center">
+              Let&apos;s discuss your sourcing requirements and how our services can help you achieve your business goals.
+            </Text>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/quote">
+                <Button size="lg" className="appatex-gradient">
+                  Request Quote
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button variant="outline" size="lg">
+                  Contact Our Team
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
         </div>
       </SectionContainer>
     </div>

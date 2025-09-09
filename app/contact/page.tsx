@@ -24,21 +24,24 @@ export default function ContactPage() {
       title: "Email Us",
       description: "Send us an email and we&apos;ll respond within 24 hours",
       contact: contactData.email,
-      action: "Send Email"
+      action: "Send Email",
+      href: `mailto:${contactData.email}`
     },
     {
       icon: Phone,
       title: "Call Us",
       description: "Speak directly with our sourcing experts",
       contact: contactData.phone,
-      action: "Call Now"
+      action: "Call Now",
+      href: `tel:${contactData.phone}`
     },
     {
       icon: MessageSquare,
       title: "WhatsApp",
       description: "Chat with us instantly on WhatsApp",
       contact: contactData.whatsapp,
-      action: "WhatsApp Chat"
+      action: "WhatsApp Chat",
+      href: `https://wa.me/${contactData.whatsapp.replace(/[^0-9]/g, '')}`
     }
   ];
 
@@ -49,7 +52,7 @@ export default function ContactPage() {
       phone: contactData.phone,
       whatsapp: contactData.whatsapp,
       email: contactData.email,
-      hours: "Sunday - Thursday: 9:00 AM - 6:00 PM"
+      hours: "Saturday - Thursday: 9:00 AM - 6:00 PM"
     }
   ];
 
@@ -111,9 +114,11 @@ export default function ContactPage() {
                     <Text weight="semibold" className="body-text-black mb-4 text-center">
                       {method.contact}
                     </Text>
-                    <Button className="appatex-gradient">
-                      {method.action}
-                    </Button>
+                    <a href={method.href} target={method.href.startsWith('http') ? '_blank' : '_self'} rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+                      <Button className="appatex-gradient w-full">
+                        {method.action}
+                      </Button>
+                    </a>
                   </CardContent>
                 </Card>
               );
@@ -259,7 +264,9 @@ export default function ContactPage() {
                         <Phone className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <Text weight="semibold" className="body-text-black">Phone</Text>
-                          <Text className="body-text-black-muted">{office.phone}</Text>
+                          <a href={`tel:${office.phone}`} className="body-text-black-muted hover:text-primary transition-colors">
+                            {office.phone}
+                          </a>
                         </div>
                       </div>
                       
@@ -267,7 +274,9 @@ export default function ContactPage() {
                         <MessageSquare className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <Text weight="semibold" className="body-text-black">WhatsApp</Text>
-                          <Text className="body-text-black-muted">{office.whatsapp}</Text>
+                          <a href={`https://wa.me/${office.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="body-text-black-muted hover:text-primary transition-colors">
+                            {office.whatsapp}
+                          </a>
                         </div>
                       </div>
                       
@@ -275,7 +284,9 @@ export default function ContactPage() {
                         <Mail className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <Text weight="semibold" className="body-text-black">Email</Text>
-                          <Text className="body-text-black-muted">{office.email}</Text>
+                          <a href={`mailto:${office.email}`} className="body-text-black-muted hover:text-primary transition-colors">
+                            {office.email}
+                          </a>
                         </div>
                       </div>
                       
@@ -324,7 +335,7 @@ export default function ContactPage() {
             <Heading level={2} className="heading-black mb-4">
               Frequently Asked Questions
             </Heading>
-            <Text size="lg" className="body-text-black-secondary">
+            <Text size="lg" className="body-text-black-secondary text-center">
               Here are some common questions we receive from our clients.
             </Text>
           </div>
@@ -335,7 +346,7 @@ export default function ContactPage() {
                 <Heading level={4} className="heading-black mb-3">
                   What is your minimum order quantity?
                 </Heading>
-                <Text className="body-text-black-muted">
+                <Text className="body-text-black-muted text-center">
                   We offer flexible MOQ options based on your specific requirements and product category. Contact us to discuss your needs.
                 </Text>
               </CardContent>
@@ -346,7 +357,7 @@ export default function ContactPage() {
                 <Heading level={4} className="heading-black mb-3">
                   How long does the sourcing process take?
                 </Heading>
-                <Text className="body-text-black-muted">
+                <Text className="body-text-black-muted text-center">
                   The timeline varies depending on product complexity, but typically ranges from 2-8 weeks from initial consultation to delivery.
                 </Text>
               </CardContent>
@@ -357,7 +368,7 @@ export default function ContactPage() {
                 <Heading level={4} className="heading-black mb-3">
                   Do you provide quality assurance?
                 </Heading>
-                <Text className="body-text-black-muted">
+                <Text className="body-text-black-muted text-center">
                   Yes, we have rigorous quality control processes including pre-production inspections, in-process checks, and final audits.
                 </Text>
               </CardContent>
@@ -368,7 +379,7 @@ export default function ContactPage() {
                 <Heading level={4} className="heading-black mb-3">
                   Can you source custom products?
                 </Heading>
-                <Text className="body-text-black-muted">
+                <Text className="body-text-black-muted text-center">
                   Absolutely! We specialize in custom sourcing solutions tailored to your specific requirements and specifications.
                 </Text>
               </CardContent>

@@ -5,7 +5,7 @@ export const heroContent = {
   title: "Transform Your Sourcing Vision Into Premium Reality",
   subtitle: "APPATEX delivers exceptional garments sourcing solutions with uncompromising quality. From concept to delivery, we orchestrate excellence that elevates your brand.",
   primaryButton: {
-    text: "Get Quote",
+    text: "START YOUR ORDER",
     href: "#contact"
   },
   secondaryButton: {

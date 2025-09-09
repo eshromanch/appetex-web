@@ -75,7 +75,7 @@ export default function ServicesPage() {
         backgroundImage="/service.jpg"
         backgroundImageAlt="Professional sourcing and supply chain management"
         primaryButton={{
-          text: "Get Quote",
+          text: "START YOUR ORDER",
           href: "/contact"
         }}
         secondaryButton={{
@@ -247,7 +247,7 @@ export default function ServicesPage() {
           <div className="relative">
             <div className="relative h-96 rounded-2xl overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src="/factory.jpg"
                 alt="Global sourcing and supply chain management"
                 fill
                 className="object-cover"

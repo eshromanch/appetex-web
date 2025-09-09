@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Link from 'next/link';
+import { contactData } from '@/data/contactData';
 
 // WhatsApp SVG Icon Component
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -49,7 +50,7 @@ const FloatingWhatsApp = () => {
               </p>
               <div className="flex gap-2">
                 <Link
-                  href="https://wa.me/1234567890?text=Hi! I'm interested in your garment sourcing services."
+                  href={`https://wa.me/${contactData.whatsapp.replace(/[^0-9]/g, '')}?text=Hi! I'm interested in your garment sourcing services.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-full transition-colors duration-200"
