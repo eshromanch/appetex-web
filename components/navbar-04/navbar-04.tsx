@@ -17,7 +17,7 @@ const Navbar04Page = () => {
 
         <div className="flex items-center gap-3">
           <Link href="/quote">
-            <Button className="rounded-full appatex-gradient">
+            <Button className="hidden md:block rounded-full appatex-gradient">
               Get Quote
             </Button>
           </Link>

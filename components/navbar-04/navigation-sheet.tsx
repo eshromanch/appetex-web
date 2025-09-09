@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
+import Link from "next/link";
 
 export const NavigationSheet = () => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,13 @@ export const NavigationSheet = () => {
       <SheetContent>
         <Logo />
         <NavMenu orientation="vertical" className="mt-12" onItemClick={() => setOpen(false)} />
+        <div className="w-full flex items-center justify-center">
+      <Link className="w-full" href="/quote">
+            <Button onClick={() => setOpen(false)} variant="primary" size="lg" className="w-full mt-6 block md:hidden appatex-gradient">
+              Get Quote
+            </Button>
+          </Link>
+      </div>
       </SheetContent>
     </Sheet>
   );

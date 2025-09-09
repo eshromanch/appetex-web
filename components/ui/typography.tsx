@@ -11,12 +11,12 @@ interface HeadingProps {
 }
 
 const headingClasses = {
-  1: "text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight",
-  2: "text-3xl md:text-4xl lg:text-5xl font-display font-semibold tracking-tight",
-  3: "text-2xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight",
-  4: "text-xl md:text-2xl lg:text-3xl font-display font-medium tracking-tight",
-  5: "text-lg md:text-xl lg:text-2xl font-display font-medium tracking-tight",
-  6: "text-base md:text-lg lg:text-xl font-display font-medium tracking-tight",
+  1: "text-3xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight",
+  2: "text-2xl md:text-4xl lg:text-5xl font-display font-semibold tracking-tight",
+  3: "text-xl md:text-3xl lg:text-4xl font-display font-medium tracking-tight",
+  4: "text-lg md:text-2xl lg:text-3xl font-display font-medium tracking-tight",
+  5: "text-base md:text-xl lg:text-2xl font-display font-medium tracking-tight",
+  6: "text-sm md:text-lg lg:text-xl font-display font-medium tracking-tight",
 };
 
 export function Heading({
@@ -56,10 +56,10 @@ interface TextProps {
 
 const textSizeClasses = {
   xs: "text-xs",
-  sm: "text-sm",
-  base: "text-base",
-  lg: "text-lg",
-  xl: "text-xl",
+  sm: "text-xs md:text-sm",
+  base: "text-sm md:text-base",
+  lg: "text-base md:text-lg",
+  xl: "text-lg md:text-xl",
 };
 
 const textWeightClasses = {
