@@ -20,8 +20,8 @@ export const NavigationSheet = () => {
         </Button>
       </SheetTrigger>
       <SheetContent>
-        {/* <Logo /> */}
-        <Image src="/logo.png" alt="Logo" width={150} height={150} className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"/>
+        <Logo />
+        {/* <Image src="/logo.png" alt="Logo" width={150} height={150} className="w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"/> */}
         <NavMenu orientation="vertical" className="mt-12" onItemClick={() => setOpen(false)} />
         <div className="w-full flex items-center justify-center">
       <Link className="w-full" href="/quote">

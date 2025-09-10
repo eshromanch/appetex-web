@@ -31,7 +31,7 @@ const Hero01 = () => {
       >
         <div className="text-center pt-6 lg:pt-0 max-w-4xl mx-auto space-y-8">
           <div className="space-y-6">
-            <Badge variant="gradient" size="lg" className="hero-glass body-text-white">
+            <Badge variant="gradient" size="lg" className="hero-glass body-text-white hidden md:block w-fit mx-auto">
               {heroContent.badge}
             </Badge>
             
