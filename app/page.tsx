@@ -12,7 +12,9 @@ export default function Home() {
       <Logos07Page type="client" />
       <Overview />
       <CategorySection />
-      <Logos07Page type="partner" />
+      <div className="-mt-20">
+      <Logos07Page type="partner" /> 
+      </div>
       <ProvenProcesses />
       {/* <Testimonial04 /> */}
       <CTA />

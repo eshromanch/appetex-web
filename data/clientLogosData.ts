@@ -21,14 +21,14 @@ export const clientLogos = [
   },
   { 
     name: "Izawa", 
-    image: "/content/logos/client/izawa.png",
+    image: "/content/logos/client/izawa.jpeg",
     alt: "Izawa Logo"
   },
-  { 
-    name: "Karinpia", 
-    image: "/content/logos/client/karinpia.png",
-    alt: "Karinpia Logo"
-  },
+  // { 
+  //   name: "Karinpia", 
+  //   image: "/content/logos/client/karinpia.jpeg",
+  //   alt: "Karinpia Logo"
+  // },
   { 
     name: "LPP", 
     image: "/content/logos/client/lpp.png",
@@ -36,7 +36,7 @@ export const clientLogos = [
   },
   { 
     name: "Mitsuwa", 
-    image: "/content/logos/client/mitsuwa.png",
+    image: "/content/logos/client/mitsuwa.jpeg",
     alt: "Mitsuwa Logo"
   },
   { 

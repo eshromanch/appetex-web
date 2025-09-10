@@ -35,7 +35,7 @@ const Logos07Page = ({ type }: Logos07PageProps) => {
                   alt={logo.alt}
                   width={120}
                   height={60}
-                  className="object-contain transition-all duration-300 opacity-60 hover:opacity-100"
+                  className="w-[120px] h-[80px] object-contain scale-105 transition-all duration-300 opacity-60 hover:opacity-100"
                 />
               </div>
             ))}

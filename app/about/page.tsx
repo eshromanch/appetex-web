@@ -8,6 +8,7 @@ import { achievements } from "@/data/achievements";
 import { CheckCircle, Users, Globe, Award, Target, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import Logos07Page from "@/components/logos-07/logos-07";
 
 export default function AboutPage() {
   const stats = [
@@ -164,7 +165,7 @@ export default function AboutPage() {
                   <div className="w-full h-80 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl flex items-center justify-center">
                     <div className="w-64 h-64 bg-white rounded-xl shadow-lg overflow-hidden">
                       <Image
-                        src="/content/nayeem"
+                        src="/content/nayeem.jpeg"
                         alt={aboutData.founders[1].name}
                         width={500}
                         height={500}
@@ -308,6 +309,7 @@ export default function AboutPage() {
           </div>
         </div>
       </SectionContainer>
+      <Logos07Page type="client" />
 
       {/* CTA Section */}
       <SectionContainer size="xl" padding="xl" background="default">

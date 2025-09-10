@@ -19,6 +19,9 @@ interface QuoteItem {
   productId: string;
   quantity: number;
   notes: string;
+  isCustom?: boolean;
+  customProductName?: string;
+  customProductDescription?: string;
 }
 
 export default function QuotePage() {
@@ -33,6 +36,13 @@ export default function QuotePage() {
   const [additionalRequirements, setAdditionalRequirements] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [showCustomProductForm, setShowCustomProductForm] = useState(false);
+  const [customProduct, setCustomProduct] = useState({
+    name: '',
+    description: '',
+    quantity: 1000,
+    notes: ''
+  });
   const searchRef = useRef<HTMLDivElement>(null);
 
   const addProductToQuote = (productId: string) => {
@@ -56,6 +66,24 @@ export default function QuotePage() {
       };
       setQuoteItems(items => [...items, newItem]);
     }
+  };
+
+  const addCustomProductToQuote = () => {
+    if (!customProduct.name.trim()) return;
+    
+    const newItem: QuoteItem = {
+      id: Date.now().toString(),
+      productId: `custom-${Date.now()}`,
+      quantity: customProduct.quantity,
+      notes: customProduct.notes,
+      isCustom: true,
+      customProductName: customProduct.name,
+      customProductDescription: customProduct.description
+    };
+    
+    setQuoteItems(items => [...items, newItem]);
+    setCustomProduct({ name: '', description: '', quantity: 1000, notes: '' });
+    setShowCustomProductForm(false);
   };
 
   const removeFromQuote = (itemId: string) => {
@@ -215,7 +243,21 @@ export default function QuotePage() {
                           })
                         ) : (
                           <div className="p-3 text-center text-gray-500">
-                            No products found matching &quot;{searchQuery}&quot;
+                            <div className="mb-3">
+                              No products found matching &quot;{searchQuery}&quot;
+                            </div>
+                            <div className="text-sm">
+                              Looking for other products?{' '}
+                              <button
+                                onClick={() => {
+                                  setShowCustomProductForm(true);
+                                  setIsSelectOpen(false);
+                                }}
+                                className="text-blue-600 hover:text-blue-800 underline"
+                              >
+                                Click here to add custom product
+                              </button>
+                            </div>
                           </div>
                         )}
                         </div>
@@ -225,6 +267,85 @@ export default function QuotePage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Custom Product Form */}
+            {showCustomProductForm && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="body-text-black">Add Custom Product</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="custom-product-name" className="body-text-black">
+                        Product Name *
+                      </Label>
+                      <Input
+                        id="custom-product-name"
+                        placeholder="e.g., Custom T-Shirt, Specialized Workwear"
+                        value={customProduct.name}
+                        onChange={(e) => setCustomProduct(prev => ({ ...prev, name: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="custom-product-description" className="body-text-black">
+                        Product Description
+                      </Label>
+                      <Textarea
+                        id="custom-product-description"
+                        placeholder="Describe the product specifications, materials, colors, etc."
+                        value={customProduct.description}
+                        onChange={(e) => setCustomProduct(prev => ({ ...prev, description: e.target.value }))}
+                        rows={3}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="custom-product-quantity" className="body-text-black">
+                        Quantity *
+                      </Label>
+                      <Input
+                        id="custom-product-quantity"
+                        type="number"
+                        min="1000"
+                        step="1000"
+                        value={customProduct.quantity}
+                        onChange={(e) => setCustomProduct(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1000 }))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="custom-product-notes" className="body-text-black">
+                        Special Requirements
+                      </Label>
+                      <Textarea
+                        id="custom-product-notes"
+                        placeholder="Any special requirements, quality standards, delivery timeline, etc."
+                        value={customProduct.notes}
+                        onChange={(e) => setCustomProduct(prev => ({ ...prev, notes: e.target.value }))}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={addCustomProductToQuote}
+                        disabled={!customProduct.name.trim()}
+                        className="flex-1"
+                      >
+                        Add to Quote
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setShowCustomProductForm(false);
+                          setCustomProduct({ name: '', description: '', quantity: 1000, notes: '' });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Selected Products */}
             {quoteItems.length > 0 && (
@@ -250,6 +371,65 @@ export default function QuotePage() {
                     {quoteItems.map((item) => {
                       const product = getProductById(item.productId);
                       const category = getCategoryById(product?.categoryId || '');
+                      
+                      // Handle custom products
+                      if (item.isCustom) {
+                        return (
+                          <div key={item.id} className="flex flex-col sm:flex-row items-start gap-4 p-4 border rounded-lg">
+                            <div className="flex-1 space-y-3 w-full">
+                              <div>
+                                <Heading level={6} className="heading-black">
+                                  {item.customProductName}
+                                </Heading>
+                                <Text size="sm" className="body-text-black-muted">
+                                  Custom Product • MOQ: 1000
+                                </Text>
+                                {item.customProductDescription && (
+                                  <Text size="sm" className="body-text-black-muted mt-1">
+                                    {item.customProductDescription}
+                                  </Text>
+                                )}
+                              </div>
+                              
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                <div className="w-full sm:w-auto">
+                                  <Label htmlFor={`quantity-${item.id}`} className="text-sm">
+                                    Quantity
+                                  </Label>
+                                  <Input
+                                    id={`quantity-${item.id}`}
+                                    type="number"
+                                    min="1000"
+                                    step="1000"
+                                    value={item.quantity}
+                                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1000)}
+                                    className="w-full sm:w-24"
+                                  />
+                                </div>
+                                <div className="flex-1 w-full">
+                                  <Label htmlFor={`notes-${item.id}`} className="text-sm">
+                                    Notes (Optional)
+                                  </Label>
+                                  <Input
+                                    id={`notes-${item.id}`}
+                                    placeholder="Special requirements, colors, etc."
+                                    value={item.notes}
+                                    onChange={(e) => updateNotes(item.id, e.target.value)}
+                                  />
+                                </div>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => removeFromQuote(item.id)}
+                                  className="text-destructive hover:text-destructive self-end sm:self-auto"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
                       
                       if (!product) return null;
 

@@ -7,6 +7,7 @@ import { services } from "@/data/services";
 import { Search, Users, Package, Truck, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Logos07Page from "@/components/logos-07/logos-07";
 
 export default function ServicesPage() {
   const processSteps = [
@@ -258,6 +259,8 @@ export default function ServicesPage() {
           </div>
         </div>
       </SectionContainer>
+
+      <Logos07Page type="partner" />
 
       {/* CTA Section */}
       <SectionContainer size="xl" padding="xl" background="muted">
