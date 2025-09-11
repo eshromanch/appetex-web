@@ -3,6 +3,7 @@ import { Building2 } from 'lucide-react';
 export const contactData = {
   email: 'info@appatexbd.com',
   phone: '+880 1672724579',
+  phone2: '+880 1821-422765',
   whatsapp: '+880 1672724579',
   address: 'House #1, 3rd floor, Road #5, Uttara Sector 11, Dhaka 1230, Bangladesh',
   website: 'www.appatex.com'

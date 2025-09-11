@@ -71,6 +71,12 @@ const footerSections: { title: string; links: FooterLink[] }[] = [
         icon: Phone,
       },
       {
+        title: contactData.phone2,
+        href: `tel:${contactData.phone2}`,
+        isContact: true,
+        icon: Phone,
+      },
+      {
         title: contactData.whatsapp,
         href: `https://wa.me/${contactData.whatsapp.replace(/[^0-9]/g, '')}`,
         isContact: true,

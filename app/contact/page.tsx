@@ -31,7 +31,7 @@ export default function ContactPage() {
       icon: Phone,
       title: "Call Us",
       description: "Speak directly with our sourcing experts",
-      contact: contactData.phone,
+      contact: `${contactData.phone} / ${contactData.phone2}`,
       action: "Call Now",
       href: `tel:${contactData.phone}`
     },
@@ -264,9 +264,14 @@ export default function ContactPage() {
                         <Phone className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                         <div>
                           <Text weight="semibold" className="body-text-black">Phone</Text>
-                          <a href={`tel:${office.phone}`} className="body-text-black-muted hover:text-primary transition-colors">
-                            {office.phone}
-                          </a>
+                          <div className="space-y-1">
+                            <a href={`tel:${office.phone}`} className="block body-text-black-muted hover:text-primary transition-colors">
+                              {office.phone}
+                            </a>
+                            <a href={`tel:${contactData.phone2}`} className="block body-text-black-muted hover:text-primary transition-colors">
+                              {contactData.phone2}
+                            </a>
+                          </div>
                         </div>
                       </div>
                       
