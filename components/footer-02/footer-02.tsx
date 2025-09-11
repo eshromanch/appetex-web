@@ -12,7 +12,7 @@ import {
   LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
-
+import { Logo } from "../navbar-04/logo";
 interface FooterLink {
   title: string;
   href: string;
@@ -93,9 +93,10 @@ const Footer02Page = () => {
         <div className="py-12 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-10 px-6 xl:px-0">
           <div className="col-span-full lg:w-4/6 lg:col-span-2">
               {/* Logo */}
-            <div className="text-2xl font-display font-bold appatex-text-gradient">
+            {/* <div className="text-2xl font-display font-bold appatex-text-gradient">
               APPATEX
-            </div>
+            </div> */}
+            <Logo />
 
             <p className="mt-4 body-text-black-muted">
               Professional garments sourcing with 15+ years of expertise. From concept to delivery, we orchestrate excellence across 12+ countries.
