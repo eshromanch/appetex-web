@@ -12,7 +12,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { products } from "@/data/productsData";
 import { categories } from "@/data/productCategoriesData";
 import { MessageSquare, X, Package, Search, Check } from "lucide-react";
-import Link from "next/link";
 
 interface QuoteItem {
   id: string;
@@ -43,7 +42,72 @@ export default function QuotePage() {
     quantity: 1000,
     notes: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const searchRef = useRef<HTMLDivElement>(null);
+
+  const handleSubmitQuote = async () => {
+    if (quoteItems.length === 0) {
+      alert('Please add at least one product to your quote request.');
+      return;
+    }
+
+    if (!clientInfo.firstName || !clientInfo.lastName || !clientInfo.email) {
+      alert('Please fill in all required fields (First Name, Last Name, Email).');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const quoteData = {
+        firstName: clientInfo.firstName,
+        lastName: clientInfo.lastName,
+        email: clientInfo.email,
+        company: clientInfo.company,
+        phone: clientInfo.phone,
+        items: quoteItems.map(item => ({
+          productId: item.productId,
+          productName: item.isCustom ? item.customProductName : products.find(p => p.id === item.productId)?.name || '',
+          description: item.isCustom ? item.customProductDescription : products.find(p => p.id === item.productId)?.description || '',
+          quantity: item.quantity,
+          notes: item.notes,
+          isCustom: item.isCustom
+        })),
+        notes: additionalRequirements
+      };
+
+      const response = await fetch('/api/quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quoteData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form
+        setQuoteItems([]);
+        setClientInfo({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          company: ''
+        });
+        setAdditionalRequirements('');
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting quote:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const addProductToQuote = (productId: string) => {
     const existingItem = quoteItems.find(item => item.productId === productId);
@@ -587,24 +651,42 @@ export default function QuotePage() {
 
             <Card>
               <CardContent className="pt-6">
+                {submitStatus === 'success' && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-green-600" />
+                      <Text className="text-green-800 font-medium">
+                        Thank you! Your quote request has been submitted successfully. We&apos;ll review it and get back to you within 24 hours.
+                      </Text>
+                    </div>
+                  </div>
+                )}
+                
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <Text className="text-red-800 font-medium">
+                      Sorry, there was an error submitting your quote request. Please try again or contact us directly.
+                    </Text>
+                  </div>
+                )}
+
                 <div className="space-y-4">
                   <div className="text-center">
                     <Text size="sm" className="body-text-black-muted">
                       {quoteItems.length} product{quoteItems.length !== 1 ? 's' : ''} selected
                     </Text>
                   </div>
-                  <Link href="/contact" className="block">
-                    <Button 
-                      size="lg" 
-                      className="w-full appatex-gradient"
-                      disabled={quoteItems.length === 0}
-                    >
-                      <MessageSquare className="h-5 w-5 mr-2" />
-                      Submit Inquiry
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    className="w-full appatex-gradient"
+                    onClick={handleSubmitQuote}
+                    disabled={isSubmitting || quoteItems.length === 0}
+                  >
+                    <MessageSquare className="h-5 w-5 mr-2" />
+                    {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
+                  </Button>
                   <Text size="xs" className="text-center body-text-black-muted">
-                    You&apos;ll be redirected to our contact form to complete your request
+                    We&apos;ll review your request and get back to you within 24 hours
                   </Text>
                 </div>
               </CardContent>

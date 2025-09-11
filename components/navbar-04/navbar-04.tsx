@@ -5,7 +5,6 @@ import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 import Link from "next/link";
-import Image from "next/image";
 
 const Navbar04Page = () => {
   return (

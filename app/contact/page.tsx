@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { SectionContainer } from "@/components/ui/section-container";
 import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,61 @@ import {
 } from "lucide-react";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    company: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          company: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   
   const contactMethods = [
     {
@@ -144,7 +200,26 @@ export default function ContactPage() {
             
             <Card>
               <CardContent className="pt-6">
-                <form className="space-y-6">
+                {submitStatus === 'success' && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <Text className="text-green-800 font-medium">
+                        Thank you! Your message has been sent successfully. We&apos;ll get back to you within 24 hours.
+                      </Text>
+                    </div>
+                  </div>
+                )}
+                
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <Text className="text-red-800 font-medium">
+                      Sorry, there was an error sending your message. Please try again or contact us directly.
+                    </Text>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium body-text-black mb-2">
@@ -152,6 +227,9 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Your first name"
@@ -163,6 +241,9 @@ export default function ContactPage() {
                       </label>
                       <input
                         type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Your last name"
@@ -176,6 +257,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="your.email@company.com"
@@ -188,6 +272,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="text"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Your company name"
                     />
@@ -199,6 +286,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="+1 (555) 123-4567"
                     />
@@ -210,6 +300,9 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="text"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="What can we help you with?"
                     />
@@ -220,6 +313,9 @@ export default function ContactPage() {
                       Message *
                     </label>
                     <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                       required
                       rows={4}
                       className="w-full px-4 py-3 border border-border rounded-lg body-text-black focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -227,8 +323,13 @@ export default function ContactPage() {
                     ></textarea>
                   </div>
                   
-                  <Button type="submit" size="lg" className="w-full appatex-gradient">
-                    Send Message
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full appatex-gradient"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                     <Send className="ml-2 h-5 w-5" />
                   </Button>
                 </form>

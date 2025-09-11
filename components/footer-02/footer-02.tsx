@@ -36,6 +36,10 @@ const footerSections: { title: string; links: FooterLink[] }[] = [
         title: "Contact Us",
         href: "/contact",
       },
+      {
+        title: "Admin Panel",
+        href: "/admin",
+      },
     ],
   },
   {

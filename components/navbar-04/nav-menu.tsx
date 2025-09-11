@@ -7,7 +7,6 @@ import {
 import { NavigationMenuProps } from "@radix-ui/react-navigation-menu";
 import { navigationItems } from "@/data/navigationData";
 import Link from "next/link";
-import { Button } from "../ui";
 
 interface NavMenuProps extends NavigationMenuProps {
   onItemClick?: () => void;

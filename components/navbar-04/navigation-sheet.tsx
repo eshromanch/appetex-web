@@ -7,7 +7,6 @@ import { Menu } from "lucide-react";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import Link from "next/link";
-import Image from "next/image";
 
 export const NavigationSheet = () => {
   const [open, setOpen] = useState(false);
