@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Contact from '@/models/Contact';
+import { sendContactNotification } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,6 +30,22 @@ export async function POST(request: NextRequest) {
     });
 
     await contact.save();
+
+    // Send email notification
+    try {
+      await sendContactNotification({
+        firstName,
+        lastName,
+        email,
+        company,
+        phone,
+        subject,
+        message,
+      });
+    } catch (emailError) {
+      console.error('Failed to send contact notification email:', emailError);
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json(
       { message: 'Contact form submitted successfully', id: contact._id },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Quote from '@/models/Quote';
+import { sendQuoteNotification } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,6 +35,24 @@ export async function POST(request: NextRequest) {
     });
 
     await quote.save();
+
+    // Send email notification
+    try {
+      await sendQuoteNotification({
+        firstName,
+        lastName,
+        email,
+        company,
+        phone,
+        country,
+        items,
+        totalItems,
+        notes,
+      });
+    } catch (emailError) {
+      console.error('Failed to send quote notification email:', emailError);
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json(
       { message: 'Quote request submitted successfully', id: quote._id },

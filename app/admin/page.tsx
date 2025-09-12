@@ -19,7 +19,8 @@ import {
   Clock,
   XCircle,
   LogOut,
-  User
+  User,
+  ExternalLink
 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
@@ -240,7 +241,7 @@ export default function AdminPage() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              {/* User Info & Logout */}
+              {/* User Info & Actions */}
               <div className="flex items-center gap-3">
                 {user && (
                   <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
@@ -250,6 +251,16 @@ export default function AdminPage() {
                     </Text>
                   </div>
                 )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('http://mail.athenadevtech.com', '_blank')}
+                  className="flex items-center gap-2"
+                >
+                  <Mail className="h-4 w-4" />
+                  Webmail
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
                 <Button
                   variant="outline"
                   size="sm"
