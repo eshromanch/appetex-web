@@ -160,12 +160,6 @@ export default function AdminLoginPage() {
                 {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-
-            <div className="mt-6 text-center">
-              <Text size="sm" className="body-text-black-muted">
-                Default credentials: admin / admin123
-              </Text>
-            </div>
           </CardContent>
         </Card>
       </div>
