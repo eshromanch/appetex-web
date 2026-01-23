@@ -2,10 +2,12 @@ import { SectionContainer } from "@/components/ui/section-container";
 import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { PageHero } from "@/components/ui/page-hero";
 import { aboutData } from "@/data/aboutData";
 import { achievements } from "@/data/achievements";
-import { CheckCircle, Users, Globe, Award, Target, Shield } from "lucide-react";
+import { documents } from "@/data/documentsData";
+import { CheckCircle, Users, Globe, Award, Target, Shield, Eye, Download } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Logos07Page from "@/components/logos-07/logos-07";
@@ -272,6 +274,78 @@ export default function AboutPage() {
         </div>
       </SectionContainer>
 
+      {/* Certifications & Documents Section */}
+      <SectionContainer size="xl" padding="xl" background="default">
+        <div className="text-center space-y-12">
+          <div className="max-w-3xl mx-auto">
+            <Heading level={2} className="heading-black mb-4">
+              Certifications & Documents
+            </Heading>
+            <Text size="lg" className="body-text-black-secondary text-center">
+              We maintain complete transparency with all our legal documents and certifications available for review.
+            </Text>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {documents.map((doc, index) => {
+              const Icon = doc.icon;
+              return (
+                <Card key={index} className="hover:shadow-lg transition-all duration-300 group">
+                  <CardContent className="pt-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      {/* Icon */}
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <Icon className="h-8 w-8 text-primary" />
+                      </div>
+                      
+                      {/* Badge */}
+                      <Badge variant="secondary" size="sm">
+                        {doc.category}
+                      </Badge>
+                      
+                      {/* Title & Description */}
+                      <div className="space-y-2">
+                        <Heading level={4} className="heading-black">
+                          {doc.title}
+                        </Heading>
+                        <Text size="sm" className="body-text-black-muted">
+                          {doc.description}
+                        </Text>
+                      </div>
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 w-full pt-2">
+                        <a
+                          href={`/pdf/${encodeURIComponent(doc.filename)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1"
+                        >
+                          <Button variant="outline" size="sm" className="w-full">
+                            <Eye className="h-4 w-4 mr-1" />
+                            View
+                          </Button>
+                        </a>
+                        <a
+                          href={`/pdf/${encodeURIComponent(doc.filename)}`}
+                          download
+                          className="flex-1"
+                        >
+                          <Button variant="primary" size="sm" className="w-full">
+                            <Download className="h-4 w-4 mr-1" />
+                            Download
+                          </Button>
+                        </a>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </SectionContainer>
+
       {/* Core Values */}
 
 
@@ -327,11 +401,15 @@ export default function AboutPage() {
                   Get Started
                 </Button>
               </Link>
-              <Link href="/services">
+              <a
+                href="/Presentation - APPATEX.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="outline" size="lg">
                   Learn More
                 </Button>
-              </Link>
+              </a>
             </div>
           </CardContent>
         </Card>

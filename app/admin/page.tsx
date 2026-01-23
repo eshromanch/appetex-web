@@ -6,6 +6,8 @@ import { Heading, Text } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ImageUploader } from "@/components/admin/image-uploader";
+import { MultiImageUploader } from "@/components/admin/multi-image-uploader";
 import { 
   Mail, 
   Phone, 
@@ -20,7 +22,8 @@ import {
   XCircle,
   LogOut,
   User,
-  ExternalLink
+  ExternalLink,
+  Image as ImageIcon
 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
@@ -57,12 +60,41 @@ interface Quote {
   createdAt: string;
 }
 
+interface Gallery {
+  _id: string;
+  title: string;
+  description?: string;
+  slug: string;
+  coverImage: string;
+  images: Array<{
+    url: string;
+    caption?: string;
+    order: number;
+  }>;
+  category?: string;
+  isPublished: boolean;
+  order: number;
+  createdAt: string;
+}
+
 export default function AdminPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'contacts' | 'quotes'>('contacts');
+  const [activeTab, setActiveTab] = useState<'contacts' | 'quotes' | 'galleries'>('contacts');
   const [user, setUser] = useState<{ username: string; role: string } | null>(null);
+  const [showGalleryForm, setShowGalleryForm] = useState(false);
+  const [editingGallery, setEditingGallery] = useState<Gallery | null>(null);
+  const [galleryForm, setGalleryForm] = useState({
+    title: '',
+    description: '',
+    coverImage: '',
+    images: [] as Array<{ url: string; caption?: string; order: number }>,
+    category: '',
+    isPublished: false,
+    order: 0,
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -85,16 +117,19 @@ export default function AdminPage() {
 
   const fetchData = async () => {
     try {
-      const [contactsRes, quotesRes] = await Promise.all([
+      const [contactsRes, quotesRes, galleriesRes] = await Promise.all([
         fetch('/api/contact'),
-        fetch('/api/quote')
+        fetch('/api/quote'),
+        fetch('/api/gallery')
       ]);
       
       const contactsData = await contactsRes.json();
       const quotesData = await quotesRes.json();
+      const galleriesData = await galleriesRes.json();
       
       setContacts(contactsData);
       setQuotes(quotesData);
+      setGalleries(galleriesData);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -179,6 +214,132 @@ export default function AdminPage() {
     } catch (error) {
       console.error('Logout error:', error);
     }
+  };
+
+  // Gallery CRUD functions
+  const handleCreateGallery = async () => {
+    try {
+      const response = await fetch('/api/gallery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(galleryForm),
+      });
+      
+      if (response.ok) {
+        fetchData();
+        setShowGalleryForm(false);
+        resetGalleryForm();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to create gallery');
+      }
+    } catch (error) {
+      console.error('Error creating gallery:', error);
+      alert('Failed to create gallery');
+    }
+  };
+
+  const handleUpdateGallery = async (id: string) => {
+    try {
+      const response = await fetch(`/api/gallery/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(galleryForm),
+      });
+      
+      if (response.ok) {
+        fetchData();
+        setShowGalleryForm(false);
+        setEditingGallery(null);
+        resetGalleryForm();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to update gallery');
+      }
+    } catch (error) {
+      console.error('Error updating gallery:', error);
+      alert('Failed to update gallery');
+    }
+  };
+
+  const handleDeleteGallery = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this gallery?')) return;
+    
+    try {
+      const response = await fetch(`/api/gallery/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        fetchData();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to delete gallery');
+      }
+    } catch (error) {
+      console.error('Error deleting gallery:', error);
+      alert('Failed to delete gallery');
+    }
+  };
+
+  const handleTogglePublish = async (id: string, currentStatus: boolean) => {
+    try {
+      const response = await fetch(`/api/gallery/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPublished: !currentStatus }),
+      });
+      
+      if (response.ok) {
+        fetchData();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to update publish status');
+      }
+    } catch (error) {
+      console.error('Error toggling publish status:', error);
+      alert('Failed to update publish status');
+    }
+  };
+
+  const resetGalleryForm = () => {
+    setGalleryForm({
+      title: '',
+      description: '',
+      coverImage: '',
+      images: [],
+      category: '',
+      isPublished: false,
+      order: 0,
+    });
+  };
+
+  const handleEditGallery = (gallery: Gallery) => {
+    setEditingGallery(gallery);
+    setGalleryForm({
+      title: gallery.title,
+      description: gallery.description || '',
+      coverImage: gallery.coverImage,
+      images: gallery.images,
+      category: gallery.category || '',
+      isPublished: gallery.isPublished,
+      order: gallery.order,
+    });
+    setShowGalleryForm(true);
+  };
+
+  const handleCoverImageUploaded = (url: string) => {
+    setGalleryForm({
+      ...galleryForm,
+      coverImage: url,
+    });
+  };
+
+  const handleGalleryImagesChange = (images: Array<{ url: string; caption?: string; order: number }>) => {
+    setGalleryForm({
+      ...galleryForm,
+      images,
+    });
   };
 
   const getStatusBadge = (status: string) => {
@@ -290,6 +451,14 @@ export default function AdminPage() {
                   <FileText className="h-4 w-4" />
                   Quotes ({quotes.length})
                 </Button>
+                <Button
+                  variant={activeTab === 'galleries' ? 'primary' : 'outline'}
+                  onClick={() => setActiveTab('galleries')}
+                  className="flex items-center gap-2"
+                >
+                  <ImageIcon className="h-4 w-4" />
+                  Galleries ({galleries.length})
+                </Button>
               </div>
             </div>
           </div>
@@ -399,6 +568,201 @@ export default function AdminPage() {
                     </CardContent>
                   </Card>
                 ))
+              )}
+            </div>
+          )}
+
+          {/* Galleries Tab */}
+          {activeTab === 'galleries' && (
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <Heading level={2} className="text-2xl font-bold">
+                  Gallery Management
+                </Heading>
+                <Button 
+                  onClick={() => {
+                    resetGalleryForm();
+                    setEditingGallery(null);
+                    setShowGalleryForm(true);
+                  }}
+                >
+                  + Create New Album
+                </Button>
+              </div>
+
+              {showGalleryForm && (
+                <Card className="mb-6 p-6">
+                  <Heading level={3} className="text-xl font-bold mb-4">
+                    {editingGallery ? 'Edit Album' : 'Create New Album'}
+                  </Heading>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Title *</label>
+                      <input
+                        type="text"
+                        value={galleryForm.title}
+                        onChange={(e) => setGalleryForm({ ...galleryForm, title: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        placeholder="Album title"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Description</label>
+                      <textarea
+                        value={galleryForm.description}
+                        onChange={(e) => setGalleryForm({ ...galleryForm, description: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        rows={3}
+                        placeholder="Album description"
+                      />
+                    </div>
+
+                    <ImageUploader
+                      label="Cover Image *"
+                      onImageUploaded={handleCoverImageUploaded}
+                      currentImage={galleryForm.coverImage}
+                    />
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Category</label>
+                      <input
+                        type="text"
+                        value={galleryForm.category}
+                        onChange={(e) => setGalleryForm({ ...galleryForm, category: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        placeholder="e.g., Factory, Products, Events"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Order</label>
+                      <input
+                        type="number"
+                        value={galleryForm.order}
+                        onChange={(e) => setGalleryForm({ ...galleryForm, order: parseInt(e.target.value) || 0 })}
+                        className="w-full p-2 border rounded"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={galleryForm.isPublished}
+                          onChange={(e) => setGalleryForm({ ...galleryForm, isPublished: e.target.checked })}
+                          className="w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">Published</span>
+                      </label>
+                    </div>
+
+                    <MultiImageUploader
+                      images={galleryForm.images}
+                      onImagesChange={handleGalleryImagesChange}
+                    />
+
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => {
+                          if (editingGallery) {
+                            handleUpdateGallery(editingGallery._id);
+                          } else {
+                            handleCreateGallery();
+                          }
+                        }}
+                      >
+                        {editingGallery ? 'Update Album' : 'Create Album'}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setShowGalleryForm(false);
+                          setEditingGallery(null);
+                          resetGalleryForm();
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {galleries.map((gallery) => (
+                  <Card key={gallery._id} className="overflow-hidden">
+                    <img
+                      src={gallery.coverImage}
+                      alt={gallery.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <Heading level={4} className="text-lg font-bold">
+                          {gallery.title}
+                        </Heading>
+                        <Badge variant={gallery.isPublished ? 'default' : 'secondary'}>
+                          {gallery.isPublished ? 'Published' : 'Draft'}
+                        </Badge>
+                      </div>
+                      
+                      {gallery.description && (
+                        <Text className="text-sm text-gray-600 mb-3 line-clamp-2">
+                          {gallery.description}
+                        </Text>
+                      )}
+                      
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                        <ImageIcon className="h-4 w-4" />
+                        <span>{gallery.images.length} images</span>
+                        {gallery.category && (
+                          <>
+                            <span>•</span>
+                            <span>{gallery.category}</span>
+                          </>
+                        )}
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => handleEditGallery(gallery)}
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => handleTogglePublish(gallery._id, gallery.isPublished)}
+                          variant="outline"
+                          size="sm"
+                        >
+                          {gallery.isPublished ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                        </Button>
+                        <Button
+                          onClick={() => handleDeleteGallery(gallery._id)}
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {galleries.length === 0 && !showGalleryForm && (
+                <Card>
+                  <CardContent className="pt-6 text-center">
+                    <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <Text className="body-text-black-muted">No galleries yet. Create your first album!</Text>
+                  </CardContent>
+                </Card>
               )}
             </div>
           )}

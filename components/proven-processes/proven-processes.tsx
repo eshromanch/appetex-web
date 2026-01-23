@@ -59,10 +59,10 @@ const ProvenProcesses = () => {
           <div className="hidden lg:block">
             <div className="relative w-full h-[500px] rounded-2xl overflow-hidden">
               <Image
-                src="/process.jpg"
+                src="/home01.jpeg"
                 alt="Professional garments manufacturing and quality control process"
                 fill
-                className="object-cover scale-125"
+                className="object-cover"
                   />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
