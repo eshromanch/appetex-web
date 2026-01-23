@@ -407,7 +407,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
               >
                 <Button variant="outline" size="lg">
-                  Learn More
+                  Company Profile
                 </Button>
               </a>
             </div>
