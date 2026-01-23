@@ -172,8 +172,8 @@ export default function ContactPage() {
                     </Text>
                     <a href={method.href} target={method.href.startsWith('http') ? '_blank' : '_self'} rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
                       <Button className="appatex-gradient w-full">
-                        {method.action}
-                      </Button>
+                      {method.action}
+                    </Button>
                     </a>
                   </CardContent>
                 </Card>

@@ -79,20 +79,20 @@ export const PageHero = ({
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {primaryButton && (
                   <Link href={primaryButton.href}>
-                    <Button size="lg" className="appatex-gradient">
-                      {primaryButton.text}
-                    </Button>
+                  <Button size="lg" className="appatex-gradient">
+                    {primaryButton.text}
+                  </Button>
                   </Link>
                 )}
                 {secondaryButton && (
                   <Link href={secondaryButton.href}>
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
-                    >
-                      {secondaryButton.text}
-                    </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-primary"
+                  >
+                    {secondaryButton.text}
+                  </Button>
                   </Link>
                 )}
               </div>

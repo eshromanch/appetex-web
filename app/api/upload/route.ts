@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
-import path from 'path';
+import { join } from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +9,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File;
     
     if (!file) {
-      return NextResponse.json(
-        { error: 'No file uploaded' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
     // Validate file type
@@ -33,43 +30,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create unique filename
+    // Generate unique filename (EXACTLY like AM-bazaar)
     const timestamp = Date.now();
-    const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const filename = `${timestamp}-${originalName}`;
-
-    // Create gallery directory if it doesn't exist
-    const galleryDir = path.join(process.cwd(), 'public', 'gallery');
-    if (!existsSync(galleryDir)) {
-      await mkdir(galleryDir, { recursive: true });
+    const filename = `${timestamp}-${file.name}`;
+    
+    // Use /uploads/ directory like AM-bazaar
+    const uploadDir = process.env.UPLOAD_DIR || 'public/uploads';
+    const filepath = join(process.cwd(), uploadDir, filename);
+    
+    // Create uploads directory if it doesn't exist
+    if (!existsSync(join(process.cwd(), uploadDir))) {
+      await mkdir(join(process.cwd(), uploadDir), { recursive: true });
     }
 
     // Convert file to buffer and save
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const filepath = path.join(galleryDir, filename);
     
     await writeFile(filepath, buffer);
 
-    // Return the public URL
-    const publicUrl = `/gallery/${filename}`;
+    // Return EXACTLY like AM-bazaar (nested structure)
+    const fileUrl = `/uploads/${filename}`;
     
     return NextResponse.json({
-      success: true,
-      url: publicUrl,
-      filename: filename
+      data: {
+        url: fileUrl,
+        filename: filename,
+      },
     });
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error('Upload error:', error);
     return NextResponse.json(
       { error: 'Failed to upload file' },
       { status: 500 }
     );
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

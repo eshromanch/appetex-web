@@ -58,7 +58,7 @@ export function ImageUploader({ onImageUploaded, currentImage, label, className 
       const data = await response.json();
 
       if (response.ok) {
-        onImageUploaded(data.url);
+        onImageUploaded(data.data.url);
       } else {
         setError(data.error || 'Failed to upload image');
         setPreview('');

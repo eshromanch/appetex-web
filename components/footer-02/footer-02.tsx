@@ -121,7 +121,7 @@ const Footer02Page = () => {
                     const { title, href, isContact, icon } = link;
                     const IconComponent = icon;
                     return (
-                      <li key={title}>
+                    <li key={title}>
                         {href.startsWith('http') ? (
                           <a
                             href={href}
@@ -135,17 +135,17 @@ const Footer02Page = () => {
                             <span className={isContact ? "text-sm" : ""}>{title}</span>
                           </a>
                         ) : (
-                          <Link
-                            href={href}
+                      <Link
+                        href={href}
                             className="body-text-black-muted hover:body-text-black transition-colors duration-200 flex items-start gap-2"
-                          >
+                      >
                             {isContact && IconComponent && (
                               <IconComponent className="h-4 w-4 mt-0.5 flex-shrink-0" />
                             )}
                             <span className={isContact ? "text-sm" : ""}>{title}</span>
-                          </Link>
+                      </Link>
                         )}
-                      </li>
+                    </li>
                     );
                   })}
                 </ul>

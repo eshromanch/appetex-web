@@ -59,7 +59,7 @@ export function MultiImageUploader({ images, onImagesChange, className }: MultiI
         });
 
         const data = await response.json();
-        return response.ok ? data.url : null;
+        return response.ok ? data.data.url : null;
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);

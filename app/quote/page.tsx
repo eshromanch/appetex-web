@@ -278,10 +278,10 @@ export default function QuotePage() {
                         <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
                         {filteredProducts.length > 0 ? (
                           filteredProducts.map((product) => {
-                            const category = getCategoryById(product.categoryId);
+                          const category = getCategoryById(product.categoryId);
                             const isAlreadyAdded = quoteItems.some(item => item.productId === product.id);
                             
-                            return (
+                          return (
                               <div
                                 key={product.id}
                                 onClick={() => !isAlreadyAdded && handleProductSelect(product.id)}
@@ -295,7 +295,7 @@ export default function QuotePage() {
                                       {product.name}
                                     </div>
                                     <div className="text-sm text-gray-500 truncate">
-                                      {category?.name} • MOQ: {product.moq}
+                                    {category?.name} • MOQ: {product.moq}
                                     </div>
                                   </div>
                                   {isAlreadyAdded && (
@@ -303,7 +303,7 @@ export default function QuotePage() {
                                   )}
                                 </div>
                               </div>
-                            );
+                          );
                           })
                         ) : (
                           <div className="p-3 text-center text-gray-500">
@@ -676,15 +676,15 @@ export default function QuotePage() {
                       {quoteItems.length} product{quoteItems.length !== 1 ? 's' : ''} selected
                     </Text>
                   </div>
-                  <Button 
-                    size="lg" 
-                    className="w-full appatex-gradient"
+                    <Button 
+                      size="lg" 
+                      className="w-full appatex-gradient"
                     onClick={handleSubmitQuote}
                     disabled={isSubmitting || quoteItems.length === 0}
-                  >
-                    <MessageSquare className="h-5 w-5 mr-2" />
+                    >
+                      <MessageSquare className="h-5 w-5 mr-2" />
                     {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
-                  </Button>
+                    </Button>
                   <Text size="xs" className="text-center body-text-black-muted">
                     We&apos;ll review your request and get back to you within 24 hours
                   </Text>
